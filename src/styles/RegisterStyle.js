@@ -14,6 +14,7 @@ export const RegisterStyle = StyleSheet.create({
   subbackgroud: {
     backgroundColor: "#F8F8F8",
     width: width * 0.92,
+    // height: Platform.OS === 'ios'? '90%' : '92%',
     height,
     borderRadius: 25,
     paddingBottom: 20,
@@ -24,12 +25,50 @@ export const RegisterStyle = StyleSheet.create({
   },
   customFrame: {
     width: width * 0.8,
-    height: height * 0.062,
+    height: height * 0.06,
     backgroundColor: "#FFF",
-    borderRadius: 30,
+    borderRadius: 20,
     marginVertical: 5,
     alignSelf:'center',
-    alignItems:'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: Platform.OS === "ios" ? 0.22 : 3.54,
+    shadowRadius: 3,
+    elevation: Platform.OS === "ios" ? 2 : 3,
+    flexDirection: "row"
+  },
+  customText: {
+    color: "#6B9089",
+    fontSize: 16,
+    width: width *0.735,
+    height: height * 0.062,
+    paddingLeft: 20
+  },
+  imagebackground: {
+    resizeMode: 'cover', 
+    justifyContent:'center',
+    width: width * 0.92,
+    height: height*0.3,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    alignSelf: 'center'
+  },
+  profileposition: {
+    position:'absolute',
+    left: width*0.29,
+    top: height*0.16,
+    borderRadius: 70
+  },
+  biobox: {
+    width: width * 0.8,
+    height: height * 0.23,
+    backgroundColor: "#FFF",
+    borderRadius: 20,
+    marginVertical: 5,
+    alignSelf:'center',
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -39,26 +78,29 @@ export const RegisterStyle = StyleSheet.create({
     shadowRadius: 3,
     elevation: Platform.OS === "ios" ? 2 : 3,
     flexDirection: "row",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  customText: {
+  custombioText: {
     color: "#6B9089",
     fontSize: 16,
-    width: width *0.75,
-    height: height * 0.062,
-    paddingLeft: 20
+    width: width * 0.75,
+    height: height * 0.2,
   },
-  imagebackground: {
-    resizeMode: 'cover', 
-    justifyContent:'center',
-    width: width * 0.92,
-    height: height*0.33,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+  addimg: {
+    backgroundColor: '#FFF', 
+    borderRadius: 70,
+    width: 26,
+    height: 26,
+    position: 'absolute',
+    left: width*0.26,
   },
-  profileposition: {
-    backgroundColor: "#F9EDE0" , 
-    position:'absolute',
-    left: width*0.29,
-    top: height*0.18
+  botton: {
+    paddingTop: 20,
+    paddingBottom: 10,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    paddingHorizontal: 25,
   }
 });

@@ -6,8 +6,7 @@ import {
     Platform,
     ScrollView,
     Image,
-    TouchableOpacity,
-    ViewPropTypes
+    TouchableOpacity
 } from 'react-native';
 import AwesomeAlert from 'react-native-awesome-alerts';
 import {AgreementStyle} from '../styles/AgreementStyle';
@@ -51,8 +50,8 @@ export default class AgreementScreen extends Component {
     return (
       <View style={AgreementStyle.containers}>
           <View style={AgreementStyle.whiteboard}>
-              <ScrollView>
               <Text style={{fontSize: 20, fontWeight: 'bold', paddingBottom: 15}}>Terms and Conditions</Text>
+              <ScrollView style={{backgroundColor: '#F8F8F8'}}>
               <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
               <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
               <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
@@ -79,13 +78,14 @@ export default class AgreementScreen extends Component {
                         <Image source={IMAGE.CHECKED} style={AgreementStyle.checkbox}/>
                     }
                   </TouchableOpacity>
-                <Text style={{fontSize: 15}}>I AGREE</Text>
+                <Text style={{fontSize: 15, fontWeight: 'bold'}}>I AGREE</Text>
               </View>
-              <View style={{alignItems: 'center', flexDirection: 'row', justifyContent:'space-between'}}>
+              </ScrollView>
+              <View style={{alignItems: 'center', flexDirection: 'row', justifyContent:'space-between', paddingTop: 20}}>
                 <CustomButton title='PREVIOUS' onPress={() => this.props.navigation.goBack()}/>
                 {this.state.agree ? 
                 <View>
-                    <CustomButton title='NEXT' onPress={() => this.showAlert()}/> 
+                    <CustomButton title='REGISTER' onPress={() => this.showAlert()}/> 
                     <AwesomeAlert
                     show={this.state.showAlert}
                     showProgress={false}
@@ -98,10 +98,9 @@ export default class AgreementScreen extends Component {
                     onConfirmPressed={() => this.hideAlert()}
                     />
                     </View>
-                : <CustomButton title='NEXT' onPress={() => this.props.navigation.navigate("Register")}/>
+                : <CustomButton title='REGISTER' onPress={() => this.props.navigation.navigate("Register")}/>
                 }
               </View>
-              </ScrollView>
           </View>
       </View>
     );

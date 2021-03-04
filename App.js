@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import LoginScreen from "./src/screen/LoginScreen";
 import AgreementScreen from "./src/screen/AgreementScreen";
 import RegisterScreen from "./src/screen/RegisterScreen";
+import CategoryScreen from './src/screen/CategoryScreen';
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -28,6 +29,11 @@ export default function App() {
           name="Register"
           component={RegisterScreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Category"
+          component={CategoryScreen}
+          options={{ headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>
