@@ -93,7 +93,16 @@ export const RegisterStyle = StyleSheet.create({
     width: 26,
     height: 26,
     position: 'absolute',
-    left: width*0.26,
+    left: '75%',
+  },
+  editbackground: {
+    backgroundColor: '#FFF', 
+    borderRadius: 70,
+    width: 26,
+    height: 26,
+    position: 'absolute',
+    right: '2%',
+    top: '6%'
   },
   botton: {
     paddingTop: 20,

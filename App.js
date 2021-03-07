@@ -1,20 +1,25 @@
-import { StatusBar } from "expo-status-bar";
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { 
+  StyleSheet,
+  LogBox 
+} from "react-native";
 import LoginScreen from "./src/screen/LoginScreen";
 import AgreementScreen from "./src/screen/AgreementScreen";
 import RegisterScreen from "./src/screen/RegisterScreen";
 import CategoryScreen from './src/screen/CategoryScreen';
+import TopicsScreen from './src/screen/TopicsScreen';
+import TimelineScreen from './src/screen/Tabbar/TimelineScreen';
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
+LogBox.ignoreAllLogs()
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     // <View style={styles.container}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Register" style={styles.container}>
+      <Stack.Navigator initialRouteName="Topics" style={styles.container}>
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -34,6 +39,16 @@ export default function App() {
           name="Category"
           component={CategoryScreen}
           options={{ headerShown: false}}
+        />
+        <Stack.Screen
+          name="Topics"
+          component={TopicsScreen}
+          options={{ headerShown: false}}
+        />
+        <Stack.Screen
+          name="Timeline"
+          component={TimelineScreen}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>

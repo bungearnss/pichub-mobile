@@ -12,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
 } from "react-native";
+import KeyboardSpacer from "react-native-keyboard-spacer";
 import { AntDesign, Entypo } from "@expo/vector-icons";
 import { RegisterStyle } from "../styles/RegisterStyle";
 import * as Animatable from "react-native-animatable";
@@ -90,23 +91,26 @@ export default class RegisterScreen extends Component {
         check_usernameChange: false,
       });
     } else {
-      this.setState({
-        check_usernameChange: true,
-        username: username,
-      });
+      this.setState(
+        {
+          check_usernameChange: true,
+          username: username,
+        },
+        console.log(`username STATE: ${this.state.username}`)
+      );
     }
   };
 
   handlePasswordChange = (password) => {
     console.log(`password: ${password}`);
-    // this.setState({ password: password });
-    this.setState({ password });
+    this.setState({ password: password });
+    console.log(`password STATE: ${this.state.password}`);
   };
 
   handlerConpassChange = (conpass) => {
     console.log(`conpass: ${conpass}`);
-    // this.setState({ conpass: conpass });
-    this.setState({ conpass });
+    this.setState({ conpass: conpass });
+    console.log(`conpass STATE: ${this.state.conpass}`);
   };
 
   handlerEmailChange = (email) => {
@@ -116,11 +120,13 @@ export default class RegisterScreen extends Component {
         check_emailChange: false,
       });
     } else {
-      this.setState({
-        check_emailChange: true,
-        // email: email,
-        email,
-      });
+      this.setState(
+        {
+          check_emailChange: true,
+          email: email,
+        },
+        console.log(`email STATE: ${this.state.email}`)
+      );
     }
   };
 
@@ -131,18 +137,20 @@ export default class RegisterScreen extends Component {
         check_profilenameChange: false,
       });
     } else {
-      this.setState({
-        check_profilenameChange: true,
-        // profilename: profilename,
-        profilename,
-      });
+      this.setState(
+        {
+          check_profilenameChange: true,
+          profilename: profilename,
+        },
+        console.log(`profilename STATE: ${this.state.profilename}`)
+      );
     }
   };
 
   handlerBioChange = (bio) => {
     console.log(`bio: ${bio}`);
-    // this.setState({ bio: bio });
-    this.setState({ bio });
+    this.setState({ bio: bio });
+    console.log(`bio STATE: ${this.state.bio}`);
   };
 
   securePassword() {
@@ -190,7 +198,7 @@ export default class RegisterScreen extends Component {
           profilename: profilename,
           bio: bio,
         };
-        this.props.navigation.navigate("Category")
+        this.props.navigation.navigate("Category");
       } else {
         Alert.alert("ยืนยันรหัสผ่านไม่ถูกต้อง");
       }
@@ -214,15 +222,27 @@ export default class RegisterScreen extends Component {
               <View style={{ height: 265 }}>
                 <TouchableOpacity onPress={() => this.picBackgroud()}>
                   {this.state.backgroundpic ? (
-                    <Image
-                      source={{ uri: this.state.backgroundpic.uri }}
-                      style={RegisterStyle.imagebackground}
-                    />
+                    <View>
+                      <Image
+                        source={{ uri: this.state.backgroundpic.uri }}
+                        style={RegisterStyle.imagebackground}
+                      />
+                      <Image
+                        source={IMAGE.EDIT}
+                        style={RegisterStyle.editbackground}
+                      />
+                    </View>
                   ) : (
-                    <Image
-                      source={IMAGE.BACKGROUND_DEFAULT}
-                      style={RegisterStyle.imagebackground}
-                    />
+                    <View>
+                      <Image
+                        source={IMAGE.BACKGROUND_DEFAULT}
+                        style={RegisterStyle.imagebackground}
+                      />
+                      <Image
+                        source={IMAGE.EDIT}
+                        style={RegisterStyle.editbackground}
+                      />
+                    </View>
                   )}
                 </TouchableOpacity>
               </View>
@@ -276,6 +296,7 @@ export default class RegisterScreen extends Component {
                     onSubmitEditing={() => this.refs.txtPassword.focus()}
                     onChangeText={this.handleUsernameChange}
                   />
+                  <KeyboardSpacer />
                   {this.state.check_usernameChange ? (
                     <Animatable.View
                       animation="bounceIn"
@@ -322,9 +343,10 @@ export default class RegisterScreen extends Component {
                       returnKeyType="next"
                       ref={"txtPassword"}
                       onSubmitEditing={() => this.refs.txtConpass.focus()}
-                      onChangeText={this.handlePasswordChange}
+                      onChangeText={[this.handlePasswordChange]}
                     />
                   )}
+                  <KeyboardSpacer />
                   <TouchableOpacity
                     onPress={() => this.securePassword()}
                     style={{ alignSelf: "center", paddingRight: 20 }}
@@ -372,6 +394,7 @@ export default class RegisterScreen extends Component {
                       onChangeText={this.handlerConpassChange}
                     />
                   )}
+                  <KeyboardSpacer />
                   <TouchableOpacity
                     onPress={() => this.secureConpass()}
                     style={{ alignSelf: "center", paddingRight: 20 }}
@@ -408,6 +431,7 @@ export default class RegisterScreen extends Component {
                     onSubmitEditing={() => this.refs.txtProfileName.focus()}
                     onChangeText={this.handlerEmailChange}
                   />
+                  <KeyboardSpacer />
                   {this.state.check_emailChange ? (
                     <Animatable.View
                       animation="bounceIn"
@@ -446,6 +470,7 @@ export default class RegisterScreen extends Component {
                     onSubmitEditing={() => this.refs.txtBio.focus()}
                     onChangeText={this.handlerProfileChange}
                   />
+                  <KeyboardSpacer />
                   {this.state.check_profilenameChange ? (
                     <Animatable.View
                       animation="bounceIn"
@@ -480,13 +505,17 @@ export default class RegisterScreen extends Component {
                     onChangeText={this.handlerBioChange}
                   />
                 </View>
+                <KeyboardSpacer />
 
                 <View style={RegisterStyle.botton}>
                   <CustomButton
                     title="PREVIOUS"
                     onPress={() => this.props.navigation.goBack()}
                   />
-                  <CustomButton title="REGISTER" onPress={() => this.onRegisterPressed()} />
+                  <CustomButton
+                    title="REGISTER"
+                    onPress={() => this.onRegisterPressed()}
+                  />
                 </View>
               </ScrollView>
             </KeyboardAvoidingView>
