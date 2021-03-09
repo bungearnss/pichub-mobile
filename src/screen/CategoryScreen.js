@@ -7,7 +7,8 @@ import {
   Image,
   ScrollView,
   Alert,
-  SafeAreaView
+  SafeAreaView,
+  StyleSheet
 } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import { CategoryStyle } from "../styles/CategoryStyle";
@@ -16,7 +17,7 @@ import { AntDesign } from "@expo/vector-icons";
 import CustomButton from "../component/CustomButton";
 import * as Animatable from 'react-native-animatable';
 
-//dummy dataList
+//mock Category data
 const dataList = [
   {cate_id: "1", cate_title: "Digital Art", cate_img: "https://cdn.pixabay.com/photo/2017/03/01/10/53/art-2108118__340.jpg"},
   {cate_id: "2", cate_title: "3D", cate_img: "https://cdn.pixabay.com/photo/2014/07/24/21/35/mortality-401222__340.jpg",},
@@ -81,18 +82,6 @@ export default class CategoryScreen extends Component {
       Alert.alert(contentAlert);
   }
 
-  // Manage the category display which will display the result as 2 columns
-  formatData = (dataList, numColumns) => {
-    const totalRows = Math.floor(dataList.lenght / numColumns);
-    let totalLastRow = dataList.lenght - totalRows * numColumns;
-
-    while (totalLastRow !== 0 && totalLastRow !== numColumns) {
-      dataList.push({ key: "blank", empty: true });
-      totalLastRow++;
-    }
-    return dataList;
-  };
-
   //render item data from api, but now i use mocking data instead
   //data is sotred as an object array format then i render this to frontend
   _renderItem = ({ item, index }) => {
@@ -149,6 +138,7 @@ export default class CategoryScreen extends Component {
     );
   };
 
+
   render() {
     return (
       <SafeAreaView style={CategoryStyle.containers}>
@@ -160,7 +150,10 @@ export default class CategoryScreen extends Component {
             <Text style={CategoryStyle.headerText}>Favorite Category</Text>
           </View>
 
-          <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+          <ScrollView 
+            style={{ flex: 1 }} 
+            showsVerticalScrollIndicator={false}
+          >
             <FlatList
               data={this.state.dataList}
               renderItem={this._renderItem}
@@ -171,12 +164,13 @@ export default class CategoryScreen extends Component {
               <CustomButton title="PREVIOUS" onPress={() => this.props.navigation.goBack()} />
               <CustomButton title="NEXT" onPress={() => this.props.navigation.navigate("Topics")}/>
 
-              {/* test onSelected function*/}
+              {/* test onSelected function */}
               {/* <CustomButton title="NEXT" onPress={() => this.onSelected()}/> */}
             </View>
           </ScrollView>
         </View>
-      </SafeAreaView>
+      </SafeAreaView> 
+      
     );
   }
 }

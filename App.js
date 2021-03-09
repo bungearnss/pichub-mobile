@@ -19,7 +19,7 @@ export default function App() {
   return (
     // <View style={styles.container}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Topics" style={styles.container}>
+      <Stack.Navigator initialRouteName="Category" style={styles.container}>
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -48,7 +48,7 @@ export default function App() {
         <Stack.Screen
           name="Timeline"
           component={TimelineScreen}
-          options={{headerShown: false}}
+          options={{ headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>
