@@ -17,9 +17,8 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    // <View style={styles.container}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Category" style={styles.container}>
+      <Stack.Navigator initialRouteName="Timeline" style={styles.container}>
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -52,7 +51,6 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
-    // </View>
   );
 }
 

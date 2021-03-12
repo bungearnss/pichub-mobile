@@ -61,7 +61,6 @@ export const TimelineStyle = StyleSheet.create({
     height: "100%",
     position: "absolute",
     borderRadius: 10,
-    // resizeMode: 'cover',
   },
   ImageView: {
     flex: 1,
@@ -71,6 +70,9 @@ export const TimelineStyle = StyleSheet.create({
   ImageTitle: {
     color: "#000",
     paddingBottom: 3,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+  },
+  ModalView: {
+    flex: 1,
   },
 });
