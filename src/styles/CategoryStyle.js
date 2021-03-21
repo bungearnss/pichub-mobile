@@ -4,6 +4,10 @@ import { Dimensions } from "react-native";
 const { width } = Dimensions.get("window");
 const height = width * 0.51;
 
+const SLIDER_WIDTH = Dimensions.get("window").width;
+const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.8);
+const ITEM_HEIGHT = Math.round((ITEM_WIDTH * 2.6) / 4);
+
 export const CategoryStyle = StyleSheet.create({
   containers: {
     backgroundColor: "#8CCDC1",
@@ -11,21 +15,18 @@ export const CategoryStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 10,
-    marginTop: 15
   },
   subcontainer: {
     backgroundColor: "#FFF",
-    width: "92%",
-    height: "95%",
+    width: "95%",
+    height: "98%",
     borderRadius: 15,
-    // paddingHorizontal: 5,
-    paddingBottom: 10,
-    alignItems: 'center'
+    paddingBottom: 5,
+    paddingHorizontal: 8
   },
   itemStyle: {
-    backgroundColor: "#FFF",
+    backgroundColor: "#8CCDC1",
     alignItems: "center",
-    //justifyContent: 'center',
     flex: 1,
     height: 170,
   },
@@ -42,18 +43,16 @@ export const CategoryStyle = StyleSheet.create({
     height: '10%',
   },
   ImageBox: {
-    width: width*0.42,
-    height: 205,
+    width: width*0.43,
+    height: 225,
     borderRadius: 15,
-    justifyContent: 'space-evenly',
   },
   ImageBoxSelect: {
-    width: width*0.42,
-    height: 205,
+    width: width*0.43,
+    height: 225,
     borderRadius: 16,
-    justifyContent: 'space-evenly',
     borderWidth: 5,
-    borderColor: '#A6B189'
+    borderColor: '#A6B189',
   },
   headerText: {
     fontWeight: 'bold', 
@@ -64,8 +63,9 @@ export const CategoryStyle = StyleSheet.create({
   buttonspace: {
     justifyContent: 'space-evenly', 
     flexDirection: 'row', 
-    paddingBottom: 10, 
-    paddingTop: 15
+    paddingBottom: 15, 
+    paddingTop: 10,
+    width
   },
   imgsize: {
     width: '100%', 
@@ -85,5 +85,39 @@ export const CategoryStyle = StyleSheet.create({
     fontSize: 16,
     paddingLeft: 7,
     paddingBottom: 3
-  }
+  },
+  slide: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#8CCDC1",
+  },
+  title: {
+    fontSize: 22,
+    color: "white",
+    textAlign: "center",
+    paddingBottom: 10,
+  },
+  backgroundImage: {
+    height: 0, //ITEM_HEIGHT
+    width: SLIDER_WIDTH,
+    resizeMode: "cover",
+  },
+  circleDiv: {
+    position: "absolute",
+    bottom: ITEM_HEIGHT * 0.27,
+    height: 20,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    width,
+  },
+  circle: {
+    backgroundColor: "#FFF",
+    width: 10,
+    height: 10,
+    borderRadius: 10,
+    marginHorizontal: 5,
+  },
 });

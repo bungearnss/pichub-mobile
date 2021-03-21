@@ -6,9 +6,7 @@ import {
   Image,
   FlatList,
   ScrollView,
-  ImageBackground,
   Animated,
-  StyleSheet
 } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import PictureModal from '../../component/PictureModal';
@@ -37,7 +35,7 @@ const totaldata = [
   {img_id: "8", img_title: 'Wrestler Wresting', img_owner: 'Yuri_B', tags: 'FOR YOU', img_src: 'https://cdn.pixabay.com/photo/2013/07/12/15/24/wrestler-149840__340.png', profile_pic: 'https://cdn.pixabay.com/photo/2016/11/18/19/07/happy-1836445__340.jpg', img_bio: '', img_cate: '', img_price: '100', img_stock: ''},
   {img_id: "9", img_title: 'Berlin Wall Car', img_owner: 'Couleur', tags: 'TRENDING', img_src: 'https://cdn.pixabay.com/photo/2012/06/25/15/34/berlin-wall-50727__340.jpg', profile_pic: '', img_cate: '', img_price: '350', img_stock: ''},
   {img_id: "10", img_title: 'Women Girl Shooting', img_owner: 'Engin_Akyurt', tags: 'TRENDING', img_src: 'https://cdn.pixabay.com/photo/2015/09/18/15/38/woman-945815__340.jpg', profile_pic: 'https://cdn.pixabay.com/photo/2018/07/23/06/10/person-3556090__340.jpg', img_bio: '', img_cate: '', img_price: '350', img_stock: ''},
-  {img_id: "11", img_title: 'Colorful Colourful', img_owner: 'FunkyFocus', tags: 'FOR YOU', img_src: 'https://cdn.pixabay.com/photo/2016/11/18/12/54/colorful-1834286__340.jpg', profile_pic: '', img_bio: '', img_cate: '', img_price: '300', img_stock: ''},
+  {img_id: "11", img_title: 'Art Watercolor Color', img_owner: 'FunkyFocus', tags: 'FOR YOU', img_src: 'https://cdn.pixabay.com/photo/2017/08/25/18/48/art-2681039__340.jpg', profile_pic: '', img_bio: '', img_cate: '', img_price: '300', img_stock: ''},
   {img_id: "12", img_title: 'Graffity Wall Graffity', img_owner: 'StockSnap', tags: 'TRENDING', img_src: 'https://cdn.pixabay.com/photo/2016/02/19/11/31/graffiti-wall-1209761__340.jpg', profile_pic: 'https://cdn.pixabay.com/photo/2016/11/29/03/29/adult-1867071__340.jpg', img_bio: '', img_cate: '', img_price: '320', img_stock: ''},
   {img_id: "13", img_title: 'Sculpture Christ Figure', img_owner: 'Takmeomeo', tags: 'FOR YOU', img_src: 'https://cdn.pixabay.com/photo/2018/05/17/11/38/sculpture-3408348__340.jpg', profile_pic: 'https://cdn.pixabay.com/photo/2015/10/12/15/12/person-984282__340.jpg', img_bio: '', img_cate: '', img_price: '180', img_stock: ''},
   {img_id: "14", img_title: 'Painting Girl Brush', img_owner: 'intographics', tags: 'TRENDING', img_src: 'https://cdn.pixabay.com/photo/2020/04/28/21/01/wallpaper-5106327__340.jpg', profile_pic: '', img_cate: '', img_price: '100', img_stock: ''},
@@ -115,6 +113,22 @@ export default class TimelineScreen extends Component {
     })
   }
 
+  /* onPress function to navigation.navigate next screen */
+  onPressNext(img_id, img_title, img_owner, img_src, profile_pic, img_bio, img_cate, img_price, img_stock){
+    this.setState({
+      img_id: img_id,
+      img_title: img_title,
+      img_owner: img_owner,
+      img_src: img_src,
+      profile_pic: profile_pic,
+      img_bio: img_bio,
+      img_cate: img_cate,
+      img_price: img_price,
+      img_stock: img_stock
+    })
+    // this.props.navigation.navigate("NEXT SCREEN STACK");
+  }
+
   changeModalVisibility = (bool) => {
     this.setState({ isModalVisible: bool });
   };
@@ -170,7 +184,17 @@ export default class TimelineScreen extends Component {
             img_cate = {item.img_cate}
             img_price = {item.img_price}
             img_stock = {item.img_stock}
-            // onPress={() => this.props.navigation.navigate("TransactionScreen")} 
+            onPress={() => this.onPressNext(
+                item.img_id, 
+                item.img_title, 
+                item.img_owner, 
+                item.img_src,
+                item.profile_pic,
+                item.img_bio,
+                item.img_cate,
+                item.img_price,
+                item.img_stock
+            )} 
             onLongPress={() => 
               this.onPressModal(
                 item.img_id, 

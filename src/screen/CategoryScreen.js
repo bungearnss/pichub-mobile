@@ -30,7 +30,7 @@ const dataList = [
   {cate_id: "9", cate_title: "Wallpaper", cate_img: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/bc382a4a-850f-4076-8988-814155fadf68/deem8nf-5992545b-7b15-42b2-8a2b-c00477355c33.jpg/v1/fill/w_1280,h_769,q_75,strp/space_sea_by_mohamedsaberartist_deem8nf-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3siaGVpZ2h0IjoiPD03NjkiLCJwYXRoIjoiXC9mXC9iYzM4MmE0YS04NTBmLTQwNzYtODk4OC04MTQxNTVmYWRmNjhcL2RlZW04bmYtNTk5MjU0NWItN2IxNS00MmIyLThhMmItYzAwNDc3MzU1YzMzLmpwZyIsIndpZHRoIjoiPD0xMjgwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.GMIVrPpvH8S7RN9C5PJyu94uxdSWzHoiAfDejRe8cdU"},
   {cate_id: "10", cate_title: "Photography", cate_img: "https://cdn.pixabay.com/photo/2016/10/28/07/04/evening-1777352_1280.jpg"},
   {cate_id: "11", cate_title: "Adoptables", cate_img: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/360afd57-152c-4e81-8bdf-f29e5bec2fc0/decrxse-37b6f65a-e6ad-4556-9988-337c7859bf15.jpg/v1/fill/w_1098,h_728,q_70,strp/three_lords_auction__closed__by_orvaentadopts_decrxse-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3siaGVpZ2h0IjoiPD0xMjczIiwicGF0aCI6IlwvZlwvMzYwYWZkNTctMTUyYy00ZTgxLThiZGYtZjI5ZTViZWMyZmMwXC9kZWNyeHNlLTM3YjZmNjVhLWU2YWQtNDU1Ni05OTg4LTMzN2M3ODU5YmYxNS5qcGciLCJ3aWR0aCI6Ijw9MTkyMCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.phPgxJcNFVjmIB1HpN_RXUey5EoWZhWCM-usbILc-8k"},
-  {cate_id: "12" , cate_title: "Tutorials", cate_img: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/i/ae45cc9f-1bad-4b54-a3d1-d7a562fcd59f/dee6r6v-a7c836ee-1d21-475c-b2a5-621cdb67a7b5.jpg"},
+  {cate_id: "12" , cate_title: "Tutorials", cate_img: "https://cdn.pixabay.com/photo/2017/03/12/13/41/beaded-2137080__340.jpg"},
 ];
 
 const numColumns = 2;
@@ -75,11 +75,11 @@ export default class CategoryScreen extends Component {
       let listSelected = dataList.filter(item => item.isSelected == true);
       console.log(`listSelected: ${listSelected}`);
 
-      let contentAlert = '';
+      let contentAlert = [];
       listSelected.forEach(item => {
-          contentAlert = contentAlert + item.cate_title + '\n';
+          contentAlert = contentAlert + item.cate_id + ',' + '\n';
       })
-      Alert.alert(contentAlert);
+      // Alert.alert(contentAlert);
   }
 
   //render item data from api, but now i use mocking data instead
@@ -141,7 +141,7 @@ export default class CategoryScreen extends Component {
 
   render() {
     return (
-      <SafeAreaView style={CategoryStyle.containers}>
+      <View style={CategoryStyle.containers}>
         <View style={CategoryStyle.subcontainer}>
           <View
             style={CategoryStyle.headertitle}
@@ -162,14 +162,22 @@ export default class CategoryScreen extends Component {
             />
             <View style={CategoryStyle.buttonspace}>
               <CustomButton title="PREVIOUS" onPress={() => this.props.navigation.goBack()} />
-              <CustomButton title="NEXT" onPress={() => this.props.navigation.navigate("Topics")}/>
+              <CustomButton 
+                title="NEXT" 
+                onPress={() => [
+                  this.props.navigation.navigate("Topics"),
+                  this.onSelected(
+
+                  )
+                ]}
+              />
 
               {/* test onSelected function */}
               {/* <CustomButton title="NEXT" onPress={() => this.onSelected()}/> */}
             </View>
           </ScrollView>
         </View>
-      </SafeAreaView> 
+      </View> 
       
     );
   }
