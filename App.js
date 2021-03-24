@@ -1,53 +1,56 @@
-import React, { Component } from "react";
-import { 
-  StyleSheet,
-  LogBox 
-} from "react-native";
-import LoginScreen from "./src/screen/LoginScreen";
-import AgreementScreen from "./src/screen/AgreementScreen";
-import RegisterScreen from "./src/screen/RegisterScreen";
+import React, { Component } from 'react';
+import { StyleSheet, LogBox } from 'react-native';
+import LoginScreen from './src/screen/LoginScreen';
+import AgreementScreen from './src/screen/AgreementScreen';
+import RegisterScreen from './src/screen/RegisterScreen';
 import CategoryScreen from './src/screen/CategoryScreen';
 import TopicsScreen from './src/screen/TopicsScreen';
 import TimelineScreen from './src/screen/Tabbar/TimelineScreen';
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
+import DashboardScreen from './src/screen/Tabbar/DashboardScreen';
+import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 
-LogBox.ignoreAllLogs()
+//LogBox.ignoreAllLogs();
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Timeline" style={styles.container}>
+      <Stack.Navigator initialRouteName='Dashboard' style={styles.container}>
         <Stack.Screen
-          name="Login"
+          name='Login'
           component={LoginScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Agreement"
+          name='Agreement'
           component={AgreementScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Register"
+          name='Register'
           component={RegisterScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Category"
+          name='Category'
           component={CategoryScreen}
-          options={{ headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Topics"
+          name='Topics'
           component={TopicsScreen}
-          options={{ headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Timeline"
+          name='Timeline'
           component={TimelineScreen}
-          options={{ headerShown: false}}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='Dashboard'
+          component={DashboardScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -57,8 +60,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#8CCDC1",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#8CCDC1',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
