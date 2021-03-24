@@ -6,18 +6,12 @@ import {
   Text,
   Dimensions,
   Platform,
-  TouchableWithoutFeedback,
-  Animated,
 } from 'react-native';
 import { List } from 'react-native-paper';
 import RNPickerSelect from 'react-native-picker-select';
 import { ScrollView } from 'react-native-gesture-handler';
 import { DashboardStyle } from '../../styles/DashboardStyle';
-import CustomButton from '../../component/CustomButton';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
-const { width } = Dimensions.get('window');
-const height = width * 1.57;
 
 const month = [
   { label: 'January', value: 'January' },
