@@ -14,7 +14,11 @@ axios.interceptors.request.use(async (config)=> {
         }
 
         //using cmd/ipconfig to find your endpoint to connect your server and react-native fontend
-        config.url = join('http://10.25.251.59:13000', config.url); //SecureN wifi
+        config.url = join('http://192.168.101.189:3000', config.url); //SecureN wifi
+        /*
+        myplace wifi :: http://192.168.101.189:3000 
+        SecureN wifi :: http://10.25.251.59:3000
+        */
     }
     return config;
 });

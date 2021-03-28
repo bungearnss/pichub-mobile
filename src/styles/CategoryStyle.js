@@ -61,11 +61,11 @@ export const CategoryStyle = StyleSheet.create({
     color: '#000',
   },
   buttonspace: {
-    justifyContent: 'space-evenly', 
+    justifyContent: 'space-between', 
     flexDirection: 'row', 
     paddingBottom: 15, 
     paddingTop: 10,
-    width
+    paddingHorizontal: 30
   },
   imgsize: {
     width: '100%', 

@@ -184,7 +184,8 @@ export default class TimelineScreen extends Component {
             img_cate = {item.img_cate}
             img_price = {item.img_price}
             img_stock = {item.img_stock}
-            onPress={() => this.onPressNext(
+            onPress={() => 
+              this.onPressNext(
                 item.img_id, 
                 item.img_title, 
                 item.img_owner, 

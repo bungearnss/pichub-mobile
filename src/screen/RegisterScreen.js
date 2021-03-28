@@ -21,6 +21,7 @@ import * as ImagePicker from "expo-image-picker";
 import { Avatar } from "react-native-paper";
 import { IMAGE } from "../constants/Image";
 import CustomButton from "../component/CustomButton";
+import { httpClient } from '../../core/HttpClient';
 
 const { height } = Dimensions.get("window");
 
@@ -96,7 +97,6 @@ export default class RegisterScreen extends Component {
           check_usernameChange: true,
           username: username,
         },
-        console.log(`username STATE: ${this.state.username}`)
       );
     }
   };
@@ -104,13 +104,11 @@ export default class RegisterScreen extends Component {
   handlePasswordChange = (password) => {
     console.log(`password: ${password}`);
     this.setState({ password: password });
-    console.log(`password STATE: ${this.state.password}`);
   };
 
   handlerConpassChange = (conpass) => {
     console.log(`conpass: ${conpass}`);
     this.setState({ conpass: conpass });
-    console.log(`conpass STATE: ${this.state.conpass}`);
   };
 
   handlerEmailChange = (email) => {
@@ -125,7 +123,6 @@ export default class RegisterScreen extends Component {
           check_emailChange: true,
           email: email,
         },
-        console.log(`email STATE: ${this.state.email}`)
       );
     }
   };
@@ -142,7 +139,6 @@ export default class RegisterScreen extends Component {
           check_profilenameChange: true,
           profilename: profilename,
         },
-        console.log(`profilename STATE: ${this.state.profilename}`)
       );
     }
   };
@@ -150,7 +146,6 @@ export default class RegisterScreen extends Component {
   handlerBioChange = (bio) => {
     console.log(`bio: ${bio}`);
     this.setState({ bio: bio });
-    console.log(`bio STATE: ${this.state.bio}`);
   };
 
   securePassword() {
@@ -179,7 +174,7 @@ export default class RegisterScreen extends Component {
     }
   }
 
-  onRegisterPressed() {
+  async onRegisterPressed() {
     let check_param = this.checkEmty();
     if (check_param == "success") {
       const {
@@ -198,7 +193,17 @@ export default class RegisterScreen extends Component {
           profilename: profilename,
           bio: bio,
         };
-        this.props.navigation.navigate("Category");
+        console.log(`param: ${params}`);
+        await httpClient
+        .post('/user', params)
+        .then(async response => {
+          const result = response.data;
+          console.log(result)
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        this.props.navigation.navigate("Category")
       } else {
         Alert.alert("ยืนยันรหัสผ่านไม่ถูกต้อง");
       }
