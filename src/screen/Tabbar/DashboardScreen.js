@@ -12,6 +12,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { ScrollView } from 'react-native-gesture-handler';
 import { DashboardStyle } from '../../styles/DashboardStyle';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Tabbar from '../../component/Tabbar';
 
 const month = [
   { label: 'January', value: 'January' },
@@ -668,7 +669,7 @@ export default class DashboardScreen extends Component {
     if (this.state.month == 'January') {
       let arr = history_january.map((item, index) => {
         item.isSelected = false;
-        return { ...item };
+        return { ...itexem };
       });
       this.setState({ history: arr });
       console.log(`arr data: ${arr}`);
@@ -849,6 +850,9 @@ export default class DashboardScreen extends Component {
             </SafeAreaView>
           ))}
         </ScrollView>
+        <View>
+          <Tabbar />
+        </View>
       </View>
     );
   }
