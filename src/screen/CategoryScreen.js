@@ -7,8 +7,6 @@ import {
   Image,
   ScrollView,
   Alert,
-  SafeAreaView,
-  StyleSheet,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { CategoryStyle } from "../styles/CategoryStyle";
