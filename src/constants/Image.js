@@ -8,6 +8,9 @@ const IMAGE = {
     BACKGROUND_DEFAULT: require('../assets/images/backgroud_default.png'),
     ADD: require('../assets/images/plus.png'),
     EDIT: require('../assets/images/edit.png'),
+
+    //AccountScreen
+    SETTING: require('../assets/images/settings.png'),
 }
 
 export {IMAGE}

@@ -42,6 +42,7 @@ export default class RegisterScreen extends Component {
       email: "",
       profilename: "",
       bio: "",
+      hasPermission: ""
     };
   }
 
@@ -203,7 +204,7 @@ export default class RegisterScreen extends Component {
         .catch(error => {
           console.log(error);
         })
-        this.props.navigation.navigate("Category")
+        this.props.navigation.navigate("Login")
       } else {
         Alert.alert("ยืนยันรหัสผ่านไม่ถูกต้อง");
       }

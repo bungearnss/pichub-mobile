@@ -10,6 +10,7 @@ import CategoryScreen from './src/screen/CategoryScreen';
 import TopicsScreen from './src/screen/TopicsScreen';
 import SearchcateScreen from './src/screen/Tabbar/SearchcateScreen';
 import TimelineScreen from './src/screen/Tabbar/TimelineScreen';
+import AccountScreen from './src/screen/Tabbar/AccountScreen';
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -19,7 +20,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Search" style={styles.container}>
+      <Stack.Navigator initialRouteName="Account" style={styles.container}>
         {/* <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -29,7 +30,7 @@ export default function App() {
           name="Agreement"
           component={AgreementScreen}
           options={{ headerShown: false }}
-        /> */}
+        />
         <Stack.Screen
           name="Register"
           component={RegisterScreen}
@@ -54,7 +55,13 @@ export default function App() {
           name="Search"
           component={SearchcateScreen}
           options={{headerShown: false}}
+        /> */}
+        <Stack.Screen
+          name="Account"
+          component={AccountScreen}
+          options={{headerShown: false}}
         />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

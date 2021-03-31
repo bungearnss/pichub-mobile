@@ -25,6 +25,7 @@ import {
 import * as Animatable from "react-native-animatable";
 import CustomButton from "../component/CustomButton";
 import { IMAGE } from "../constants/Image";
+import { httpClient } from "../../core/HttpClient";
 
 const { width } = Dimensions.get("window");
 const height = width * 0.3;
@@ -41,6 +42,40 @@ export default class LoginScreen extends Component {
       isValidPassword: true,
       check_textInputChange: false,
     };
+  }
+
+  checkempty(){
+    if (this.state.username == ''){
+      return "กรุณากรอก Username"
+    }
+    else if (this.state.password == ''){
+      return "กรุณากรอก Password"
+    }
+    else {
+      return "success"
+    }
+  }
+
+  async onLoginPressed(){
+    let check_temp = this.checkempty()
+    if (check_temp == 'success'){
+      const {username, password} = this.state;
+      const params = {username: username, password: password};
+
+      httpClient
+      .post('/Login', params)
+      .then(async response => {
+        const result = response.data;
+        if (result.result == 'success'){
+          this.props.navigation.navigate("Category")
+        } else {
+          Alert.alert('Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    }
   }
 
   async logInFB() {
@@ -185,7 +220,7 @@ export default class LoginScreen extends Component {
 
             <View style={LoginStyle.buttonspace}>
               <CustomButton title="REGISTER" onPress={() => this.props.navigation.navigate("Agreement")} />
-              <CustomButton title="SIGN IN" />
+              <CustomButton title="SIGN IN" onPress={() => this.onLoginPressed()}/>
             </View>
 
             <View style={LoginStyle.checkboxcontainer}>
