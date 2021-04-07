@@ -6,9 +6,9 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
-  Modal 
 } from "react-native";
 import { StatusBar } from 'expo-status-bar';
+import * as ScreenCapture from 'expo-screen-capture';
 import { AccountStyle } from "../../styles/AccountStyle";
 import { IMAGE } from "../../constants/Image";
 import { Avatar } from "react-native-paper";
@@ -60,6 +60,16 @@ export default class AccountScreen extends Component {
       profilename: 'Bungearnss',
       bio: 'Pichub DEV Team',
     };
+  }
+
+  async componentDidMount() {
+    // This permission is only required on Android
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status === 'granted') {
+      ScreenCapture.addScreenshotListener(() => {
+        alert('ไม่อนุญาตให้นำรูปของศิลปินท่านอื่นไปใช้งานนอกแอปพลิเคชัน หากพบเห็นจะดำเนินการทางกฎหมาย 😊');
+      });
+    }
   }
 
   onPressModal(backgroundpic, profilepic, username, password, email, profilename, bio){
@@ -181,12 +191,14 @@ export default class AccountScreen extends Component {
                 </TouchableOpacity>
               </View>
               <View style={AccountStyle.line}/>
+              <View style={{paddingHorizontal: 5}}>
                 <FlatList
                   data={dataList}
                   renderItem={this._renderItem}
                   keyExtractor={(item,index) => index.toString()}
                   numColumns={numColumns}
                 />
+                </View>
             </View>
           </View>
         </View>

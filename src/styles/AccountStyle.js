@@ -65,9 +65,9 @@ export const AccountStyle = StyleSheet.create({
     backgroundColor: "transparent",
   },
   imageBox: {
-    width: width*0.44,
+    width: width*0.45,
     height: 225,
-    borderRadius: 15
+    borderRadius: 15,
   },
   imgSize: {
     width: '100%', 
@@ -79,7 +79,7 @@ export const AccountStyle = StyleSheet.create({
   imgContainer: {
     flex: 1, 
     alignItems: 'center', 
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   modalContainer: {
     alignItems: 'center', 
@@ -125,6 +125,7 @@ export const AccountStyle = StyleSheet.create({
   buttonFont: {
     fontSize: 16,
     paddingVertical: 7,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'rgba(160,160,160,0.7)'
   }
 });
