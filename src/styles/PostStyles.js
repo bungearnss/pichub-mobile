@@ -2,7 +2,7 @@ import { StyleSheet, Platform } from "react-native";
 import { Dimensions } from "react-native";
 
 const { width } = Dimensions.get("window");
-const height = width * 2.30;
+const height = width * 3.2;
 
 export const PostStyles = StyleSheet.create({
     containers: {
@@ -12,14 +12,15 @@ export const PostStyles = StyleSheet.create({
     },
     postContainer: {
         //backgroundColor: 'red',
-        marginTop: 24,
+        marginTop:0,
         padding: 16,
         width: width * 1,
         height,
     },
     finishContainer:{
-        //backgroundColor: 'red',
+        backgroundColor: '#F8F8F8',
         alignItems:'flex-end',
+        paddingTop:25
         
     },
     uploadContainer: {
@@ -63,7 +64,8 @@ export const PostStyles = StyleSheet.create({
         width:340,
         height:100,
         fontSize:15,
-        margin:8
+        //margin:0,
+        
     },
     textInputDescriptionPrice: {
         margin: 16,

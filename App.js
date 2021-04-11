@@ -75,8 +75,8 @@ export default function App() {
       */}
 
         <Stack.Screen
-          name="Timeline"
-          component={TimelineScreen}
+          name="PostScreen"
+          component={PostScreen}
           options={{ headerShown: false }}
         />
 

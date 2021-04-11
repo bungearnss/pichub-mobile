@@ -17,7 +17,7 @@ import Checkbox from 'expo-checkbox';
 
 import { PostStyles } from '../../styles/PostStyles';
 import { IMAGE } from '../../constants/Image';
-import CustomButtion from '../../component/CustomButton';
+import CustomButton from '../../component/CustomButton';
 
 //const CatagoryData = require('./CatagoryData.json')
 
@@ -56,6 +56,8 @@ export default class PostScreen extends React.Component {
             isCatagory: false,
 
             isOption: false,
+
+            content: {}
 
         };
     }
@@ -148,67 +150,80 @@ export default class PostScreen extends React.Component {
 
     render() {
         return (
-            <ScrollView style={{ backgroundColor: '#F8F8F8' }} nestedScrollEnabled={true}>
-                <View style={PostStyles.containers}>
-                    <View style={PostStyles.postContainer}>
-                        <View style={PostStyles.finishContainer}>
-                            <CustomButtion onPress={ this.onFinish } styles={{ alignSelf: 'flex-end' }} title='Finish' />
-                        </View>
-                        <View style={PostStyles.uploadContainer}>
-                            <Text style={{ fontSize: 21, margin: 6 }} >UPLOAD</Text>
-                            <View style={PostStyles.uploadTextInput}>
-                                <Text style={{ margin: 8 }}>C:asd/asd/asd</Text>
-                            </View>
-                        </View>
-                        {/*
+            <View>
+                <View style={PostStyles.finishContainer} >
+                    <CustomButton onPress={this.onFinish} styles={{ alignSelf: 'flex-end' }} title='Finish' />
+                </View>
+                <View>
+
+                    <ScrollView style={{ backgroundColor: '#F8F8F8' }} contentContainerStyle={this.state.content}>
+                        <View style={PostStyles.containers}>
+                            <View style={PostStyles.postContainer}>
+                                <View style={PostStyles.uploadContainer}>
+                                    <Text style={{ fontSize: 21, margin: 6 }} >UPLOAD</Text>
+                                    <View style={PostStyles.uploadTextInput}>
+                                        <Text style={{ margin: 8 }}>C:asd/asd/asd</Text>
+                                    </View>
+                                </View>
+                                {/*
                         <View style={PostStyles.uplodaImageContainer}>
                             {image && (<Image source={IMAGE.NONIMAGE} />)}
                         </View>
                         */}
-                        <View style={{ alignSelf: 'center' }}>
-                            <TouchableOpacity onPress={this.pickImage}>
-                                <Image source={IMAGE.UPDATE} />
-                            </TouchableOpacity>
-                        </View>
-                        <View style={PostStyles.detailPostContainer}>
-                            <View style={PostStyles.textInputDescriptionPrice}>
-                                <TextInput value={this.state.img_title} onChangeText={this.handlePictureName} style={PostStyles.textInput} placeholder="Picture Name"></TextInput>
-                                <View style={PostStyles.textInputX}>
-                                    <TextInput
-                                        multiline
-                                        numberOfLines={4}
-                                        onChangeText={this.handleDescription}
-                                        value={this.state.img_bio}
-                                        placeholder="Description"
-                                    />
+                                <View style={{ alignSelf: 'center' }}>
+                                    <TouchableOpacity onPress={this.pickImage}>
+                                        <Image source={IMAGE.UPDATE} />
+                                    </TouchableOpacity>
                                 </View>
-                                <TextInput value={this.state.img_price} onChangeText={this.handlePrice} keyboardType="numeric" placeholder="Price" style={PostStyles.textInput}></TextInput>
-                            </View>
-                            <View>
-                                <Text >CATAGORY</Text>
-                                <View style={{
-                                    height: 200,
-                                    width: 340,
-                                    borderColor: 'black',
-                                    borderWidth: 2,
-                                    borderRadius: 25,
-                                }}>
-                                    <ScrollView style={{ margin: 10, maxHeight: 200 }}  >
-                                        {this.renderCat()}
-                                    </ScrollView>
-                                </View>
-                            </View>
-                            <View style={{ marginTop: 12 }}>
-                                <Text >STOCK</Text>
-                                <View style={{ justifyContent: 'flex-start', flexDirection: 'row' }}>
+                                <View style={PostStyles.detailPostContainer}>
+                                    <View style={PostStyles.textInputDescriptionPrice}>
+                                        <TextInput value={this.state.img_title} onChangeText={this.handlePictureName} style={PostStyles.textInput} placeholder="Picture Name"></TextInput>
+                                        <View style={PostStyles.textInputX}>
+                                            <TextInput
+                                                style={{ marginTop: -18 }}
+                                                multiline
+                                                numberOfLines={4}
+                                                onChangeText={this.handleDescription}
+                                                value={this.state.img_bio}
+                                                placeholder="Description"
+                                            />
+                                        </View>
+                                        <TextInput value={this.state.img_price} onChangeText={this.handlePrice} keyboardType="numeric" placeholder="Price" style={PostStyles.textInput}></TextInput>
+                                    </View>
+                                    <View>
+                                        <Text >CATAGORY</Text>
+                                        <View style={{
+                                            height: 500,
+                                            width: 340,
+                                            borderColor: 'black',
+                                            borderWidth: 2,
+                                            borderRadius: 25,
+                                        }}>
+                                            <ScrollView
+                                                //persistentScrollbar
+                                                onTouchStart={(ev) => { this.setState({ content: { flex: 1 } }); }}
+                                                onMomentumScrollEnd={(e) => { this.setState({ content: {} }); }}
+                                                onScrollEndDrag={(e) => { this.setState({ content: {} }); }}
+                                                style={{ margin: 10, maxHeight: 800 }}  >
 
-                                    <TextInput keyboardType="numeric" onChangeText={this.handleStock} style={{ marginLeft: 8, borderColor: '#8CCDC1', borderWidth: 2, borderRadius: 8, paddingLeft: 12, paddingRight: 12 }} placeholder='NUMBER'></TextInput>
+                                                {this.renderCat()}
+                                            </ScrollView>
+                                        </View>
+                                    </View>
+                                    <View style={{ marginTop: 12 }}>
+                                        <Text >STOCK</Text>
+                                        <View style={{ justifyContent: 'flex-start', flexDirection: 'row' }}>
+
+                                            <TextInput keyboardType="numeric" onChangeText={this.handleStock} style={{ marginLeft: 8, borderColor: '#8CCDC1', borderWidth: 2, borderRadius: 8, paddingLeft: 12, paddingRight: 12 }} placeholder='NUMBER'></TextInput>
+                                        </View>
+                                    </View>
                                 </View>
                             </View>
                         </View>
-                    </View>
+                    </ScrollView>
                 </View>
-            </ScrollView>
+
+            </View>
         );
     }
 }
