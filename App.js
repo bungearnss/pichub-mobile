@@ -62,11 +62,21 @@ export default function App() {
           component={SearchcateScreen}
           options={{ headerShown: false }}
         />
-      */}
-
         <Stack.Screen
           name="PostScreen"
           component={PostScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="BuyScreen"
+          component={BuyScreen}
+          options={{ headerShown: false }}
+        />
+      */}
+
+        <Stack.Screen
+          name="Timeline"
+          component={TimelineScreen}
           options={{ headerShown: false }}
         />
 

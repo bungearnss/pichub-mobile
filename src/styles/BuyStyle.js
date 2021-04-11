@@ -6,6 +6,7 @@ const height = width * 1.50;
 
 export const BuyStyles = StyleSheet.create({
     containers: {
+        //backgroundColor: 'red',
         backgroundColor: '#F8F8F8',
         flex: 1,
         alignItems: 'center',
