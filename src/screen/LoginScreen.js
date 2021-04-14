@@ -26,6 +26,8 @@ import * as Animatable from "react-native-animatable";
 import CustomButton from "../component/CustomButton";
 import { IMAGE } from "../constants/Image";
 import { httpClient } from "../../core/HttpClient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {StackActions} from '@react-navigation/native';
 
 const { width } = Dimensions.get("window");
 const height = width * 0.3;
@@ -63,11 +65,14 @@ export default class LoginScreen extends Component {
       const params = {username: username, password: password};
 
       httpClient
-      .post('/Login', params)
+      .post('/login', params)
       .then(async response => {
         const result = response.data;
-        if (result.result == 'success'){
-          this.props.navigation.navigate("Category")
+        if (result.result == true){
+          //save token
+          await AsyncStorage.setItem("userId", result.user_id.toString());
+          await AsyncStorage.setItem("token", result.token);
+          this.props.navigation.dispatch(StackActions.replace("Timeline"))
         } else {
           Alert.alert('Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่');
         }
@@ -122,7 +127,7 @@ export default class LoginScreen extends Component {
   }
 
   textInputChange(value) {
-    console.log(`value: ${value}`);
+    console.log(`username: ${value}`);
     if (value.trim().length == 0) {
       this.setState({
         check_textInputChange: false,
@@ -136,6 +141,8 @@ export default class LoginScreen extends Component {
   }
 
   render() {
+    console.log(`username STATE: ${this.state.username}`);
+    console.log(`password STATE: ${this.state.username}`);
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={LoginStyle.containers}>
@@ -185,7 +192,7 @@ export default class LoginScreen extends Component {
                     this.setState(
                       {
                         password: text,
-                      } /* console.log(`password: ${this.state.password}`) */
+                      }
                     )
                   }
                 />
@@ -211,9 +218,9 @@ export default class LoginScreen extends Component {
                 style={{ alignSelf: "center", paddingRight: 20 }}
               >
                 {this.state.secureTextEntry ? (
-                  <Entypo name="eye" size={20} color="#B3B3B3" />
-                ) : (
                   <Entypo name="eye-with-line" size={20} color="#B3B3B3" />
+                ) : (
+                  <Entypo name="eye" size={20} color="#B3B3B3" />
                 )}
               </TouchableOpacity>
             </View>

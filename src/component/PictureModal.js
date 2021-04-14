@@ -32,8 +32,11 @@ export default class PictureModal extends Component {
     };
   }
 
+  async componentDidMount(){
+  }
+
   /* Received props from Timeline Screen to display in modal */
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       isModalVisible: nextProps.isModalVisible,
       img_id: nextProps.img_id,
@@ -57,16 +60,6 @@ export default class PictureModal extends Component {
   };
 
   render() {
-    /* console.log(`img id: ${this.state.img_id}`)
-      console.log(`img_title: ${this.state.img_title}`)
-      console.log(`img_owner: ${this.state.img_owner}`)
-      console.log(`img_src: ${this.state.img_src}`)
-      console.log(`profile_pic: ${this.state.profile_pic}`) */
-    /* console.log(`img_bio: ${this.state.img_bio}`)
-      console.log(`img_cate: ${this.state.img_cate}`)
-      console.log(`img_price: ${this.state.img_price}`)
-      console.log(`img_stock: ${this.state.img_stock}`) */
-
     const {
       img_id,
       img_title,
@@ -96,7 +89,7 @@ export default class PictureModal extends Component {
               resizeMode="cover"
             >
               <TouchableOpacity
-                onPress={() => Alert.alert("Touch Image")}
+                onPress={this.props.moveToBuy} //bug
                 style={styles.Mainbox}
               >
                 <View style={styles.profileView}>

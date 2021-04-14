@@ -11,6 +11,9 @@ const IMAGE = {
 
     //AccountScreen
     SETTING: require('../assets/images/settings.png'),
+
+    //PostScreen
+    ADDIMAGE: require('../assets/images/addimage.png'),
 }
 
 export {IMAGE}

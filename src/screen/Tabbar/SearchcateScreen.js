@@ -7,6 +7,7 @@ import {
   Image,
   ScrollView,
   TextInput,
+  SafeAreaView
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
@@ -186,6 +187,7 @@ export default class SearchcateScreen extends Component {
               </View>
             </View>
           </View>
+          <SafeAreaView style={{flex: 1}}>
           <FlatList
             data={this.state.cateList}
             renderItem={this._renderCate}
@@ -198,6 +200,7 @@ export default class SearchcateScreen extends Component {
             keyExtractor={(item, index) => index.toString()}
             numColumns={numColumns}
           />
+          </SafeAreaView>
         </ScrollView>
       </View>
     );

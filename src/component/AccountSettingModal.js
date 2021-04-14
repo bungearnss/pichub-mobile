@@ -20,6 +20,8 @@ import KeyboardSpacer from "react-native-keyboard-spacer";
 import CustomButton from "../component/CustomButton";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
+import { httpClient } from "../../core/HttpClient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -51,7 +53,7 @@ export default class AccountSettingModal extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       isModalVisible: nextProps.isModalVisible,
       backgroundpic: nextProps.backgroundpic,
@@ -170,20 +172,24 @@ export default class AccountSettingModal extends Component {
   };
 
   checkEmty() {
-    if (this.state.username_old == "") {
+    if (this.state.username == "") {
       return "กรุณากรอก username";
-    } else if (this.state.password_old == "") {
+    } else if (this.state.password == "") {
       return "กรุณากรอก password";
-    } else if (this.state.email_old == "") {
+    } else if (this.state.email == "") {
       return "กรุณากรอก email";
-    } else if (this.state.profilename_old == "") {
+    } else if (this.state.profilename == "") {
       return "กรุณากรอก profile name";
+    } else if (this.state.bio == "") {
+      return "กรุณากรอก bio"
     } else {
       return "success";
     }
   }
 
   async onConfirmPressed() {
+    let user_id = await AsyncStorage.getItem("userId");
+    console.log(`user id:::: ${user_id}`);
     let check_param = this.checkEmty();
     if (check_param == "success") {
       const {
@@ -194,9 +200,96 @@ export default class AccountSettingModal extends Component {
         profilename,
         bio,
         password_old,
+        profilepic,
+        backgroundpic,
+        profilepic_new,
+        backgroundpic_new,
       } = this.state;
       if (password === conpass || password_old === conpass) {
-        const params = {
+        if (profilepic_new == "" || backgroundpic_new == "") {
+          const data_profile = new FormData();
+          data_profile.append(
+            'file', 
+            JSON.stringify({
+              type: 'image/png',
+              name: user_id,
+              uri: profilepic.uri
+            })
+          );
+
+          const data_bg = new FormData()
+          data_bg.append('file', {
+            name: user_id,
+            type: 'image/png',
+            uri: backgroundpic.uri
+          })
+
+          const params_1 = {
+            user_id: user_id,
+            username: username,
+            password: password,
+            profilename: profilename,
+            email: email,
+            bio: bio,
+            profilepicture: data_profile,
+            backgroundpicture: data_bg,
+          };
+          console.log(`param_1: ${params_1}`);
+          await httpClient
+            .put(`/user`, params_1)
+            .then(async (response) => {
+              const result = response.data;
+              if (result.results == true) {
+                this.props.navigation.navigate("Timeline");
+              } else {
+                Alert.alert("แก้ไขข้อมูลไม่สำเร็จ")
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+
+          const data_profile = new FormData();
+          data_profile.append('file', {
+            name: user_id,
+            type: 'image/png',
+            uri: profilepic_new.uri
+          });
+
+          const data_bg = new FormData()
+          data_bg.append('file', {
+            name: user_id,
+            type: 'image/png',
+            uri: backgroundpic_new.uri
+          })
+
+          const params_2 = {
+            user_id: user_id,
+            username: username,
+            password: password,
+            profilename: profilename,
+            email: email,
+            bio: bio,
+            profilepicture: data_profile,
+            backgroundpicture: data_bg,
+          };
+          console.log(`param_2: ${params_2}`);
+          await httpClient
+            .put(`/user`, params_2)
+            .then(async (response) => {
+              const result = response.data;
+              if (result.results == true) {
+                this.props.navigation.navigate("Timeline");
+              } else {
+                Alert.alert("แก้ไขข้อมูลไม่สำเร็จ")
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
+        /* const params = {
           username: username,
           password: password,
           email: email,
@@ -204,7 +297,7 @@ export default class AccountSettingModal extends Component {
           bio: bio,
         };
         console.log(`param: ${params}`);
-        this.closeModal();
+        this.closeModal(); */
       } else {
         Alert.alert("ยืนยันรหัสผ่านไม่ถูกต้อง");
       }
@@ -214,13 +307,9 @@ export default class AccountSettingModal extends Component {
   }
 
   render() {
-    console.log(`pro pic: ${this.state.profilepic}`);
-    console.log(`back pic: ${this.state.backgroundpic}`);
+    console.log(`new profile: ${this.state.profilepic_new}`);
+    console.log(`new bg: ${this.state.backgroundpic_new}`);
     console.log(`username: ${this.state.username}`);
-    console.log(`password: ${this.state.password}`);
-    console.log(`email: ${this.state.email}`);
-    console.log(`profilename: ${this.state.profilename}`);
-    console.log(`bio: ${this.state.bio}`);
     return (
       <Modal
         visible={this.state.isModalVisible}
@@ -230,7 +319,6 @@ export default class AccountSettingModal extends Component {
         animationType="fade"
         transparent={true}
       >
-        {/* <TouchableOpacity style={{ flex: 1 }} onPress={() => this.closeModal()}> */}
         <View style={styles.container}>
           <View style={styles.subbackgroud}>
             <TouchableOpacity onPress={() => this.picBackgroud()}>
@@ -244,11 +332,29 @@ export default class AccountSettingModal extends Component {
                 </View>
               ) : (
                 <View>
-                  <Image
-                    source={{ uri: this.state.backgroundpic }}
-                    style={styles.imagebackground}
-                  />
-                  <Image source={IMAGE.EDIT} style={styles.editbackground} />
+                  {this.state.backgroundpic == "" ? (
+                    <View>
+                      <Image
+                        source={{ uri: this.state.backgroundpic }}
+                        style={styles.imagebackground}
+                      />
+                      <Image
+                        source={IMAGE.EDIT}
+                        style={styles.editbackground}
+                      />
+                    </View>
+                  ) : (
+                    <View>
+                      <Image
+                        source={IMAGE.BACKGROUND_DEFAULT}
+                        style={styles.imagebackground}
+                      />
+                      <Image
+                        source={IMAGE.EDIT}
+                        style={styles.editbackground}
+                      />
+                    </View>
+                  )}
                 </View>
               )}
             </TouchableOpacity>
@@ -266,12 +372,25 @@ export default class AccountSettingModal extends Component {
                 </View>
               ) : (
                 <View>
-                  <Avatar.Image
-                    size={130}
-                    source={{ uri: this.state.profilepic }}
-                    style={{ backgroundColor: "#F9EDE0" }}
-                  />
-                  <Image source={IMAGE.ADD} style={styles.addimg} />
+                  {this.state.profilepic == "" ? (
+                    <View>
+                      <Avatar.Image
+                        size={130}
+                        source={{ uri: this.state.profilepic }}
+                        style={{ backgroundColor: "#F9EDE0" }}
+                      />
+                      <Image source={IMAGE.ADD} style={styles.addimg} />
+                    </View>
+                  ) : (
+                    <View>
+                      <Avatar.Image
+                        size={130}
+                        source={IMAGE.PROFILE_DEFAULT}
+                        style={{ backgroundColor: "#F9EDE0" }}
+                      />
+                      <Image source={IMAGE.ADD} style={styles.addimg} />
+                    </View>
+                  )}
                 </View>
               )}
             </TouchableOpacity>
@@ -434,6 +553,10 @@ export default class AccountSettingModal extends Component {
                 </View>
                 <View style={styles.botton}>
                   <CustomButton
+                    title="BACK"
+                    onPress={() => this.closeModal()}
+                  />
+                  <CustomButton
                     title="CONFIRM"
                     onPress={() => [this.onConfirmPressed()]}
                   />
@@ -442,7 +565,6 @@ export default class AccountSettingModal extends Component {
             </KeyboardAvoidingView>
           </View>
         </View>
-        {/*  </TouchableOpacity> */}
       </Modal>
     );
   }
@@ -548,5 +670,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 10,
     alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
 });

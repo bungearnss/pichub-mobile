@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  Modal,
+  Permission
 } from "react-native";
 import { StatusBar } from 'expo-status-bar';
 import * as ScreenCapture from 'expo-screen-capture';
@@ -13,6 +15,10 @@ import { AccountStyle } from "../../styles/AccountStyle";
 import { IMAGE } from "../../constants/Image";
 import { Avatar } from "react-native-paper";
 import AccountSettingModal from '../../component/AccountSettingModal';
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import LogoutModal from '../../component/LogoutModal';
+import { httpClient } from '../../../core/HttpClient';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 //dummy dataArray
 //mock data
@@ -46,30 +52,61 @@ export default class AccountScreen extends Component {
     super(props);
     this.state = {
       isModalVisible: false,
+      islogoutVisible: false,
       img_id: null,
       img_title: null,
       img_src: '',
       img_cate: '',
       img_price: '',
       img_stock: '',
-      backgroundpic: 'https://cdn.pixabay.com/photo/2016/10/25/14/03/clouds-1768967__340.jpg',
-      profilepic: 'https://cdn.pixabay.com/photo/2019/09/01/21/56/cat-4446094__340.jpg',
-      username: "Bungearnss",
-      password: "Bungearn@pichub",
-      email: "emailTest@mail.kmutt.ac.th",
-      profilename: 'Bungearnss',
-      bio: 'Pichub DEV Team',
+      backgroundpic: '',
+      profilepic: '',
+      username: "",
+      password: "",
+      email: "",
+      profilename: '',
+      bio: '',
     };
   }
 
   async componentDidMount() {
     // This permission is only required on Android
-    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+   /*  const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status === 'granted') {
       ScreenCapture.addScreenshotListener(() => {
         alert('ไม่อนุญาตให้นำรูปของศิลปินท่านอื่นไปใช้งานนอกแอปพลิเคชัน หากพบเห็นจะดำเนินการทางกฎหมาย 😊');
       });
-    }
+    } */
+
+    let user_id = await AsyncStorage.getItem("userId");
+    console.log(`user_id = ${user_id}`)
+
+    httpClient
+    .get(`user/${user_id}`)
+    .then( response => {
+      const result = response.data;
+      // console.log(result);
+
+      if (result.results == true){
+        this.setState({
+          backgroundpic: result.backgroundpic,
+          profilepic: result.profilepic,
+          username: result.username,
+          password: result.password,
+          email: result.email,
+          profilename: result.profilename,
+          bio: result.bio
+        })
+      }
+    })
+  }
+
+  onPressOpenLogout(){
+    this.setState({islogoutVisible: true})
+  }
+
+  closeLogoutModal = (bool) => {
+    this.setState({ islogoutVisible: bool });
   }
 
   onPressModal(backgroundpic, profilepic, username, password, email, profilename, bio){
@@ -110,7 +147,13 @@ export default class AccountScreen extends Component {
 
   render() {
     const {backgroundpic, profilepic, username, password, email, profilename, bio} = this.state;
-    console.log(`isModalVisible STATE: ${this.state.isModalVisible}`)
+    console.log(`bg STATE: ${backgroundpic}`);
+    console.log(`pf STATE: ${profilepic}`);
+    console.log(`username: ${username}`);
+    console.log(`password ${password}`);
+    console.log(`profilename: ${profilename}`);
+    console.log(`email: ${email}`);
+    console.log(`bio: ${bio}`)
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={AccountStyle.container}>
@@ -123,10 +166,10 @@ export default class AccountScreen extends Component {
             }}
           >
             <View style={{ flex: 1 }}>
-              {this.state.backgroundpic ? (
+              {backgroundpic ? (
                 <View>
                   <Image
-                    source={{ uri: this.state.backgroundpic}}
+                    source={{ uri: backgroundpic}}
                     style={AccountStyle.background}
                   />
                 </View>
@@ -139,11 +182,11 @@ export default class AccountScreen extends Component {
                 </View>
               )}
               <View style={AccountStyle.profile}>
-                {this.state.profilepic ? (
+                {profilepic ? (
                   <View>
                     <Avatar.Image
                       size={145}
-                      source={{ uri: this.state.profilepic}}
+                      source={{ uri: profilepic}}
                     />
                   </View>
                 ) : (
@@ -156,9 +199,18 @@ export default class AccountScreen extends Component {
                   </View>
                 )}
               </View>
+              <View style={{alignItems: 'flex-end', marginTop: 10, marginRight: 10}}>
+                <TouchableOpacity onPress={() => this.onPressOpenLogout()}>
+                  <MaterialCommunityIcons name="logout" size={24} color="#8CCDC1" />
+                </TouchableOpacity>
+                <LogoutModal
+                  islogoutVisible ={this.state.islogoutVisible}
+                  closeLogoutModal= {(bool) => {this.closeLogoutModal(bool)}}
+                />
+              </View>
               <View style={AccountStyle.bioView}>
-                  <Text style={{fontSize: 17, fontWeight: 'bold'}}>{this.state.profilename}</Text>
-                  <Text style={{fontSize: 17}}>{this.state.bio}</Text>
+                  <Text style={{fontSize: 17, fontWeight: 'bold'}}>{profilename}</Text>
+                  <Text style={{fontSize: 17}}>{bio}</Text>
               </View>
               <View style={AccountStyle.buttonView}>
                 <TouchableOpacity 

@@ -7,6 +7,7 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
+  Alert,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { CategoryStyle } from "../styles/CategoryStyle";
@@ -15,6 +16,7 @@ import { AntDesign } from "@expo/vector-icons";
 import CustomButton from "../component/CustomButton";
 import * as Animatable from "react-native-animatable";
 import { httpClient } from "../../core/HttpClient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /* 
     PLEASE ATTENTION!!!
@@ -34,6 +36,7 @@ export default class TopicsScreen extends Component {
     this.state = {
       selected: false,
       dataList: [],
+      oldValue: []
     };
   }
 
@@ -42,7 +45,7 @@ export default class TopicsScreen extends Component {
       .get("/topics")
       .then((response) => {
         const result = response.data;
-        console.log(`result: ${result}`);
+        // console.log(`result: ${result}`);
 
         if (result != null) {
           this.setState({
@@ -53,12 +56,12 @@ export default class TopicsScreen extends Component {
       .catch((error) => {
         console.log(error);
       });
-    let arr = dataList.map((item, index) => {
+    let arr = this.state.dataList.map((item, index) => {
       item.isSelected = false;
       return { ...item };
     });
     this.setState({ dataList: arr });
-    console.log(`arr data: ${arr}`);
+    // console.log(`arr data: ${arr}`);
   }
 
   // selectionHandler is a function that detected which category the user has selected
@@ -75,16 +78,41 @@ export default class TopicsScreen extends Component {
     this.setState({ dataList: arr2 });
   };
 
-  // Manage the category display which will display the result as 2 columns
-  formatData = (dataList, numColumns) => {
-    const totalRows = Math.floor(dataList.lenght / numColumns);
-    let totalLastRow = dataList.lenght - totalRows * numColumns;
+  onSelected = async() => {
+    const { dataList } = this.state;
+    const {value} = this.props.route.params;
+    console.log(`old cate value: ${value}`);
+    //check data selected
+    //prepare information sent at the back of the hourse
+    let listSelected = dataList.filter((item) => item.isSelected == true);
+    // console.log(`listSelected: ${listSelected}`);
 
-    while (totalLastRow !== 0 && totalLastRow !== numColumns) {
-      dataList.push({ key: "blank", empty: true });
-      totalLastRow++;
-    }
-    return dataList;
+    let contentAlert = [];
+    listSelected.forEach((item) => {
+      contentAlert = contentAlert + item.cate_id + ",";
+    });
+    console.log(`new cate value: ${contentAlert}`);
+
+    /* post to subscribeCategories */
+    let allValue = [];
+    allValue = [value, contentAlert];
+    console.log(`all value STATE: ${allValue}`);
+    let user_id = await AsyncStorage.getItem('userId');
+
+    const params = {user_id: user_id, subscribed_categories: allValue};
+    httpClient
+    .post('/categories', params)
+    .then(async response => {
+      const result = response.data;
+      if (result.result == true){
+        Alert.alert("ส่งข้อมูลสำเร็จ")
+      } else {
+        Alert.alert("ส่งข้อมูลไม่สำเร็จ")
+      }
+    })
+    .catch(error => {
+      console.log(error);
+    })
   };
 
   //render item data from api, but now i use mocking data instead
@@ -96,10 +124,7 @@ export default class TopicsScreen extends Component {
       );
     }
     return (
-      <TouchableOpacity
-        /* onPress={() => Alert.alert(JSON.stringify(item.cate_title))} */ onPress={() =>
-          this.selectionHandler(index)
-        }
+      <TouchableOpacity onPress={() => this.selectionHandler(index) }
       >
         <View style={{ padding: 5, flex: 1 }}>
           {item.isSelected ? (
@@ -185,7 +210,8 @@ export default class TopicsScreen extends Component {
               />
               <CustomButton
                 title="FINISH"
-                onPress={() => this.props.navigation.navigate("Timeline")}
+                // onPress={() => this.props.navigation.navigate("Timeline")}
+                onPress={() => this.onSelected()}
               />
             </View>
           </ScrollView>

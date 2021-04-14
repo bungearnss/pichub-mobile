@@ -12,6 +12,7 @@ import AwesomeAlert from 'react-native-awesome-alerts';
 import {AgreementStyle} from '../styles/AgreementStyle';
 import {IMAGE} from '../constants/Image';
 import CustomButton from '../component/CustomButton';
+import { httpClient } from '../../core/HttpClient';
 
 const { width } = Dimensions.get("window");
 const height = width*1.57;
@@ -21,8 +22,25 @@ export default class AgreementScreen extends Component {
     super(props);
     this.state = {
         agree: true,
-        showAlert: false
+        showAlert: false,
+        statement: ''
     };
+  }
+
+  async componentDidMount(){
+    httpClient
+    .get('/agreement')
+    .then( response => {
+      const result = response.data;
+      // console.log(result);
+      
+      this.setState({
+        statement: result
+      })
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
 
   AbleAgreebox() {
@@ -47,28 +65,13 @@ export default class AgreementScreen extends Component {
   }
 
   render() {
+    // console.log(`statement:: ${this.state.statement}`)
     return (
       <View style={AgreementStyle.containers}>
           <View style={AgreementStyle.whiteboard}>
               <Text style={{fontSize: 20, fontWeight: 'bold', paddingBottom: 15}}>Terms and Conditions</Text>
               <ScrollView style={{backgroundColor: '#F8F8F8'}}>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
-              <Text>test;lgk;dlfkg;ldfkg;dfkg;kfd;gkdf;lgkdf;k;fddf;gkdf;lgk;dflgk</Text>
+              <Text>{this.state.statement}</Text>
 
               <View style={{alignItems: 'center', flexDirection: 'row', justifyContent:'center', padding: 30}}>
                   <TouchableOpacity onPress={() => this.AbleAgreebox()}>

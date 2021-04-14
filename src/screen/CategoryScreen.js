@@ -32,7 +32,7 @@ export default class CategoryScreen extends Component {
       .get("/categories")
       .then((response) => {
         const result = response.data;
-        console.log(`result :${result}`);
+        // console.log(`result :${result}`);
 
         if (result != null) {
           this.setState({
@@ -71,13 +71,6 @@ export default class CategoryScreen extends Component {
     //check data selected
     //prepare information sent at the back of the hourse
     let listSelected = dataList.filter((item) => item.isSelected == true);
-    console.log(`listSelected: ${listSelected}`);
-
-    let contentAlert = [];
-    listSelected.forEach((item) => {
-      contentAlert = contentAlert + item.cate_id + "," + "\n";
-    });
-    // Alert.alert(contentAlert);
   };
 
   //render item data from api, but now i use mocking data instead
@@ -147,6 +140,13 @@ export default class CategoryScreen extends Component {
   };
 
   render() {
+    let listSelected = this.state.dataList.filter((item) => item.isSelected == true);
+    console.log(`listSelected: ${listSelected}`);
+    let contentAlert = [];
+    listSelected.forEach((item) => {
+      contentAlert = contentAlert + item.cate_id + ",";
+    });
+    console.log(`contentAlert: ${contentAlert}`)
     return (
       <View style={CategoryStyle.containers}>
         <View style={CategoryStyle.subcontainer}>
@@ -174,10 +174,9 @@ export default class CategoryScreen extends Component {
               />
               <CustomButton
                 title="NEXT"
-                onPress={() => [
-                  this.props.navigation.navigate("Topics"),
-                  this.onSelected(),
-                ]}
+                onPress={() => 
+                  this.props.navigation.navigate("Topics", {value: contentAlert})
+                }
               />
               {/* test onSelected function */}
               {/* <CustomButton title="NEXT" onPress={() => this.onSelected()}/> */}

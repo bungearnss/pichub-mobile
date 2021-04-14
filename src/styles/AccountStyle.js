@@ -43,7 +43,7 @@ export const AccountStyle = StyleSheet.create({
   },
   bioView: {
     width: width,
-    marginTop: 60,
+    marginTop: 45,
     paddingHorizontal: 20,
     paddingBottom: 15,
   },

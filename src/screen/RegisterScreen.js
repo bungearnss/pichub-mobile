@@ -10,7 +10,7 @@ import {
   Alert,
   Keyboard,
   TouchableWithoutFeedback,
-  KeyboardAvoidingView,
+  KeyboardAvoidingView
 } from "react-native";
 import KeyboardSpacer from "react-native-keyboard-spacer";
 import { AntDesign, Entypo } from "@expo/vector-icons";
@@ -22,6 +22,8 @@ import { Avatar } from "react-native-paper";
 import { IMAGE } from "../constants/Image";
 import CustomButton from "../component/CustomButton";
 import { httpClient } from '../../core/HttpClient';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DrawerActions } from "@react-navigation/routers";
 
 const { height } = Dimensions.get("window");
 
@@ -42,7 +44,7 @@ export default class RegisterScreen extends Component {
       email: "",
       profilename: "",
       bio: "",
-      hasPermission: ""
+      hasPermission: "",
     };
   }
 
@@ -170,6 +172,8 @@ export default class RegisterScreen extends Component {
       return "กรุณากรอก email";
     } else if (this.state.profilename == "") {
       return "กรุณากรอก profile name";
+    } else if (this.state.bio == ""){
+      return "กรุณากรอก bio"
     } else {
       return "success";
     }
@@ -185,14 +189,21 @@ export default class RegisterScreen extends Component {
         email,
         profilename,
         bio,
+        profilepic,
+        backgroundpic
       } = this.state;
       if (password === conpass) {
+
+        const data = new FormData()
+      
         const params = {
           username: username,
           password: password,
           email: email,
           profilename: profilename,
           bio: bio,
+          profilepic: data.append(profilepic.uri),
+          backgroundpic: data.append(backgroundpic.uri)
         };
         console.log(`param: ${params}`);
         await httpClient
@@ -214,6 +225,8 @@ export default class RegisterScreen extends Component {
   }
 
   render() {
+    console.log(`profilepic STATE: ${this.state.profilepic}`);
+    console.log(`backgroundpic STATE: ${this.state.backgroundpic}`);
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={RegisterStyle.backgroud}>
@@ -502,9 +515,14 @@ export default class RegisterScreen extends Component {
                     {" "}
                     Bio
                   </Text>
+                  <Text style={[RegisterStyle.subject, { color: "#FF3E24" }]}>
+                    {" "}
+                    *
+                  </Text>
                 </View>
                 <View style={RegisterStyle.biobox}>
                   <TextInput
+                    multiline
                     style={RegisterStyle.custombioText}
                     returnKeyType="done"
                     ref={"txtBio"}
