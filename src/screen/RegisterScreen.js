@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Profiler } from "react";
 import {
   View,
   Text,
@@ -10,7 +10,8 @@ import {
   Alert,
   Keyboard,
   TouchableWithoutFeedback,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import KeyboardSpacer from "react-native-keyboard-spacer";
 import { AntDesign, Entypo } from "@expo/vector-icons";
@@ -21,9 +22,9 @@ import * as ImagePicker from "expo-image-picker";
 import { Avatar } from "react-native-paper";
 import { IMAGE } from "../constants/Image";
 import CustomButton from "../component/CustomButton";
-import { httpClient } from '../../core/HttpClient';
+import { httpClient } from "../../core/HttpClient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { DrawerActions } from "@react-navigation/routers";
+import axios from "axios";
 
 const { height } = Dimensions.get("window");
 
@@ -70,10 +71,13 @@ export default class RegisterScreen extends Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
+      base64: true,
       quality: 1,
     });
+
     if (!result.cancelled) {
       this.setState({ profilepic: result });
+      console.log(result);
     }
   };
 
@@ -95,12 +99,10 @@ export default class RegisterScreen extends Component {
         check_usernameChange: false,
       });
     } else {
-      this.setState(
-        {
-          check_usernameChange: true,
-          username: username,
-        },
-      );
+      this.setState({
+        check_usernameChange: true,
+        username: username,
+      });
     }
   };
 
@@ -121,12 +123,10 @@ export default class RegisterScreen extends Component {
         check_emailChange: false,
       });
     } else {
-      this.setState(
-        {
-          check_emailChange: true,
-          email: email,
-        },
-      );
+      this.setState({
+        check_emailChange: true,
+        email: email,
+      });
     }
   };
 
@@ -137,12 +137,10 @@ export default class RegisterScreen extends Component {
         check_profilenameChange: false,
       });
     } else {
-      this.setState(
-        {
-          check_profilenameChange: true,
-          profilename: profilename,
-        },
-      );
+      this.setState({
+        check_profilenameChange: true,
+        profilename: profilename,
+      });
     }
   };
 
@@ -172,8 +170,8 @@ export default class RegisterScreen extends Component {
       return "กรุณากรอก email";
     } else if (this.state.profilename == "") {
       return "กรุณากรอก profile name";
-    } else if (this.state.bio == ""){
-      return "กรุณากรอก bio"
+    } else if (this.state.bio == "") {
+      return "กรุณากรอก bio";
     } else {
       return "success";
     }
@@ -190,32 +188,57 @@ export default class RegisterScreen extends Component {
         profilename,
         bio,
         profilepic,
-        backgroundpic
+        backgroundpic,
       } = this.state;
       if (password === conpass) {
+        const uri = profilepic.uri;
+        const uriParts = uri.split(".");
+        const fileType = uriParts[uriParts.length - 1];
 
-        const data = new FormData()
-      
+        const formData = new FormData();
+        formData.append("profilepic", {
+          uri: uri,
+          name: `photo.${fileType}`,
+          type: `image/${fileType}`,
+        });
+
+
+        axios.post(httpClient, formData, {
+          headers: {
+            'accept': 'application/json',
+            'Content-Type': `multipart/form-data`
+          }
+        })
+        .then((response) => {
+          console.log(JSON.stringify(response.data))
+        })
+        .catch((error) => {
+          console.log(error)
+        }) 
+
+        // const bg = new FormData();
+        // bg.append('backgroundpic', backgroundpic.uri)
+
         const params = {
           username: username,
           password: password,
           email: email,
           profilename: profilename,
           bio: bio,
-          profilepic: data.append(profilepic.uri),
-          backgroundpic: data.append(backgroundpic.uri)
+          // profilepic: profile,
+          // backgroundpic: bg
         };
         console.log(`param: ${params}`);
         await httpClient
-        .post('/user', params)
-        .then(async response => {
-          const result = response.data;
-          console.log(result)
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        this.props.navigation.navigate("Login")
+          .post("/user", params)
+          .then(async (response) => {
+            const result = response.data;
+            console.log(result);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+        this.props.navigation.navigate("Category");
       } else {
         Alert.alert("ยืนยันรหัสผ่านไม่ถูกต้อง");
       }
@@ -225,8 +248,6 @@ export default class RegisterScreen extends Component {
   }
 
   render() {
-    console.log(`profilepic STATE: ${this.state.profilepic}`);
-    console.log(`backgroundpic STATE: ${this.state.backgroundpic}`);
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={RegisterStyle.backgroud}>

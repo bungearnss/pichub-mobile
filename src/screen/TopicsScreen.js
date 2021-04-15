@@ -91,12 +91,12 @@ export default class TopicsScreen extends Component {
     listSelected.forEach((item) => {
       contentAlert = contentAlert + item.cate_id + ",";
     });
-    console.log(`new cate value: ${contentAlert}`);
+    // console.log(`new cate value: ${contentAlert}`);
 
     /* post to subscribeCategories */
     let allValue = [];
     allValue = [value, contentAlert];
-    console.log(`all value STATE: ${allValue}`);
+    // console.log(`all value STATE: ${allValue}`);
     let user_id = await AsyncStorage.getItem('userId');
 
     const params = {user_id: user_id, subscribed_categories: allValue};
@@ -106,6 +106,7 @@ export default class TopicsScreen extends Component {
       const result = response.data;
       if (result.result == true){
         Alert.alert("ส่งข้อมูลสำเร็จ")
+        this.props.navigation.navigate("HomeApp")
       } else {
         Alert.alert("ส่งข้อมูลไม่สำเร็จ")
       }
@@ -210,7 +211,6 @@ export default class TopicsScreen extends Component {
               />
               <CustomButton
                 title="FINISH"
-                // onPress={() => this.props.navigation.navigate("Timeline")}
                 onPress={() => this.onSelected()}
               />
             </View>

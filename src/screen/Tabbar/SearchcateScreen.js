@@ -71,7 +71,7 @@ export default class SearchcateScreen extends Component {
     }
     return (
       <TouchableOpacity>
-        <View style={{ padding: 7, flex: 1 }}>
+        <View style={{ padding: 7, flex: 1 }} key={index}>
           <StatusBar hidden />
           <View style={SearchcateStyle.box}>
             <Image
@@ -161,7 +161,6 @@ export default class SearchcateScreen extends Component {
   }
 
   render() {
-      console.log(`TEXT STATE: ${this.state.text}`)
     return (
       <View
         style={{

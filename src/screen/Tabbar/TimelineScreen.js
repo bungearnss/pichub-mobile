@@ -128,9 +128,8 @@ export default class TimelineScreen extends Component {
     // console.log(`active: ${active}`)
 
     return (
-      <View style={TimelineStyle.tabContainer}>
+      <View style={TimelineStyle.tabContainer} key={tab.toString()}>
         <TouchableOpacity
-          key={tab}
           onPress={() => this.setStatusFilter(tab)}
           style={
             isActive
@@ -156,6 +155,17 @@ export default class TimelineScreen extends Component {
     );
   }
 
+  formatData = (dataList, numColumns) => {
+    const totalRows = Math.floor(dataList.length / numColumns);
+    let totalLastRow = dataList.length - totalRows * numColumns;
+
+    while (totalLastRow !== 0 && totalLastRow !== numColumns) {
+      dataList.push({ key: "blank", empty: true });
+      totalLastRow++;
+    }
+    return dataList;
+  };
+
   /* render Image in FOR YOU tab and TRENDINNG tab */
   _renderItem = ({ item, index }) => {
     // console.log(`src: ${item.img_src}`)
@@ -165,7 +175,7 @@ export default class TimelineScreen extends Component {
       );
     }
     return (
-      <Animated.View style={{ padding: 5, paddingVertical: 8 }}>
+      <Animated.View style={{ padding: 5, paddingVertical: 8 }} key={index}>
         {/* 
             **PLESE ATTENTION**
               The onPress function takes less time to press than the onLonePress function
@@ -259,9 +269,9 @@ export default class TimelineScreen extends Component {
           </View>
           <SafeAreaView style={{ flex: 1 }}>
             <FlatList
-              data={DataList}
+              data={this.formatData(DataList, numColumns)}
               renderItem={this._renderItem}
-              keyExtractor={(item, index) => index.toString()}
+              keyExtractor={(item, index) => item.toString()}
               numColumns={numColumns}
             />
           </SafeAreaView>

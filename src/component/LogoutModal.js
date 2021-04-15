@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { StackActions } from '@react-navigation/native';
 
 export default class LogoutModal extends Component {
   constructor(props) {
@@ -38,11 +37,6 @@ export default class LogoutModal extends Component {
 
   closeLogoutModal = (bool) => {
     this.setState({ islogoutVisible: bool });
-  };
-
-  async onLogoutPress(){
-    await AsyncStorage.removeItem("token");
-    this.props.navigation.dispatch(StackActions.replace("Login"));
   };
 
   render() {
@@ -77,7 +71,7 @@ export default class LogoutModal extends Component {
                 </Text>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => this.onLogoutPress}
+                  onPress={this.props.LOGOUT}
                 >
                   <Text style={styles.text}>LOGOUT</Text>
                 </TouchableOpacity>

@@ -72,7 +72,7 @@ export default class LoginScreen extends Component {
           //save token
           await AsyncStorage.setItem("userId", result.user_id.toString());
           await AsyncStorage.setItem("token", result.token);
-          this.props.navigation.dispatch(StackActions.replace("Timeline"))
+          this.props.navigation.dispatch(StackActions.replace("HomeApp"))
         } else {
           Alert.alert('Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่');
         }

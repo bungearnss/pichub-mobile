@@ -119,17 +119,17 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="loading" style={styles.container}>
-        {/* <Stack.Screen
+        <Stack.Screen
           name="loading"
           component={LoadingScreen}
           options={{ headerShown: false}}
-        /> */}
-        {/* <Stack.Screen
+        />
+        <Stack.Screen
           name="Login"
           component={LoginScreen}
           options={{ headerShown: false }}
-        /> */}
-        {/* <Stack.Screen
+        />
+        <Stack.Screen
           name="Agreement"
           component={AgreementScreen}
           options={{ headerShown: false }}
@@ -148,7 +148,7 @@ export default function App() {
           name="Topics"
           component={TopicsScreen}
           options={{ headerShown: false}}
-        /> */}
+        />
         <Stack.Screen
           name="HomeApp"
           component={TabNavigator}

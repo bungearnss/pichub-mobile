@@ -50,9 +50,9 @@ export const LoginStyle = StyleSheet.create({
     justifyContent: "space-between",
   },
   custominput: {
-    color: "#646466",
+    color: "#8CCDC1",
     marginLeft: 10,
-    fontSize: 13,
+    fontSize: 14,
     width: width * 0.65,
     height: height * 0.35,
   },

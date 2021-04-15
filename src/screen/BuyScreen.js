@@ -6,13 +6,14 @@ import CustomButton from "../component/CustomButton";
 import { IMAGE } from "../constants/Image";
 import { Avatar } from "react-native-paper";
 import BuyModal from "../component/BuyModal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default class BuyScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isModalVisible: false,
-      img_cate: [
+      img_cates: [
         { cate_id: 1, cate_title: "Animal Fox Nature" },
         { cate_id: 2, cate_title: "Women Girl Shooting" },
         { cate_id: 3, cate_title: "Sculpture Christ Figure" },
@@ -26,11 +27,17 @@ export default class BuyScreen extends Component {
       img_src: "",
       img_price: "",
       img_stock: "",
+      img_cate: [],
+      checkUser: false,
     };
   }
 
   async componentDidMount() {
     const { value } = this.props.route.params;
+    let user_id = await AsyncStorage.getItem("userId");
+    if (value.img_ownerid == user_id) {
+      this.setState({ checkUser: true });
+    }
     this.setState({
       img_id: value.img_id,
       img_title: value.img_title,
@@ -38,6 +45,7 @@ export default class BuyScreen extends Component {
       img_src: value.img_src,
       img_price: value.img_price,
       img_stock: value.img_stock,
+      img_cate: value.img_cate
     });
   }
 
@@ -58,10 +66,8 @@ export default class BuyScreen extends Component {
   };
 
   render() {
-    //   console.log(`isModalVisible state: ${this.state.isModalVisible}`)
-    console.log(`img id: ${this.state.img_id}`);
-    console.log(`img title: ${this.state.img_title}`);
     const { value } = this.props.route.params;
+    console.log(this.state.img_cate)
     return (
       <View style={BuyStyle.containers}>
         <StatusBar hidden />
@@ -93,9 +99,10 @@ export default class BuyScreen extends Component {
               >
                 {this.state.img_cate.map((item) => {
                   return (
-                    <View style={BuyStyle.cateView} key={item.cate_id}>
+                    <View style={BuyStyle.cateView} key={item}>
                       <Text style={{ color: "#FFF", fontSize: 13 }}>
-                        {item.cate_title}
+                        {/* {item.cate_title} */}
+                        {item}
                       </Text>
                     </View>
                   );
@@ -155,12 +162,9 @@ export default class BuyScreen extends Component {
                   title="BACK"
                   onPress={() => this.props.navigation.goBack()}
                 />
-                <CustomButton
-                  title="BUY"
-                  onPress={() =>
-                    this.onBuypic()
-                  }
-                />
+                {this.state.checkUser == false ? (
+                  <CustomButton title="BUY" onPress={() => this.onBuypic()} />
+                ) : null}
               </View>
               <View style={{ flex: 1 }}>
                 <BuyModal
