@@ -85,13 +85,11 @@ export default class TopicsScreen extends Component {
     //check data selected
     //prepare information sent at the back of the hourse
     let listSelected = dataList.filter((item) => item.isSelected == true);
-    // console.log(`listSelected: ${listSelected}`);
 
     let contentAlert = [];
     listSelected.forEach((item) => {
       contentAlert = contentAlert + item.cate_id + ",";
     });
-    // console.log(`new cate value: ${contentAlert}`);
 
     /* post to subscribeCategories */
     let allValue = [];
@@ -105,10 +103,10 @@ export default class TopicsScreen extends Component {
     .then(async response => {
       const result = response.data;
       if (result.result == true){
-        Alert.alert("ส่งข้อมูลสำเร็จ")
-        this.props.navigation.navigate("HomeApp")
+        Alert.alert("บันทึกข้อมูลสำเร็จ")
+        this.props.navigation.navigate("Login")
       } else {
-        Alert.alert("ส่งข้อมูลไม่สำเร็จ")
+        Alert.alert("บันทึกข้อมูลไม่สำเร็จ")
       }
     })
     .catch(error => {

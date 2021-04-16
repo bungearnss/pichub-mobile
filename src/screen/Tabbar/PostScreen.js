@@ -109,7 +109,7 @@ export default class PostScreen extends React.Component {
 
     for (let i = 0; i < cateListSelected.length; i++){
       const result = cateListSelected.slice(0, i+1).map(({cate_id}) => cate_id);
-      // console.log(result)
+      console.log(result)
 
       this.setState({
         cate_selected: result

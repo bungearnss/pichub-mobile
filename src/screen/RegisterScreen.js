@@ -24,7 +24,6 @@ import { IMAGE } from "../constants/Image";
 import CustomButton from "../component/CustomButton";
 import { httpClient } from "../../core/HttpClient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 
 const { height } = Dimensions.get("window");
 
@@ -71,7 +70,6 @@ export default class RegisterScreen extends Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      base64: true,
       quality: 1,
     });
 
@@ -107,17 +105,14 @@ export default class RegisterScreen extends Component {
   };
 
   handlePasswordChange = (password) => {
-    console.log(`password: ${password}`);
     this.setState({ password: password });
   };
 
   handlerConpassChange = (conpass) => {
-    console.log(`conpass: ${conpass}`);
     this.setState({ conpass: conpass });
   };
 
   handlerEmailChange = (email) => {
-    console.log(`email: ${email}`);
     if (email.trim().length == 0) {
       this.setState({
         check_emailChange: false,
@@ -131,7 +126,6 @@ export default class RegisterScreen extends Component {
   };
 
   handlerProfileChange = (profilename) => {
-    console.log(`profilename: ${profilename}`);
     if (profilename.trim().length == 0) {
       this.setState({
         check_profilenameChange: false,
@@ -145,7 +139,6 @@ export default class RegisterScreen extends Component {
   };
 
   handlerBioChange = (bio) => {
-    console.log(`bio: ${bio}`);
     this.setState({ bio: bio });
   };
 
@@ -191,46 +184,37 @@ export default class RegisterScreen extends Component {
         backgroundpic,
       } = this.state;
       if (password === conpass) {
-        const uri = profilepic.uri;
-        const uriParts = uri.split(".");
-        const fileType = uriParts[uriParts.length - 1];
+        
+        if (profilepic == ""){
+          this.setState({
+            profilepic: ""
+          })
+        }
 
-        const formData = new FormData();
-        formData.append("profilepic", {
-          uri: uri,
-          name: `photo.${fileType}`,
-          type: `image/${fileType}`,
+        if (backgroundpic == ""){
+          this.setState({
+            backgroundpic: ""
+          })
+        }
+
+        const data = new FormData();
+        data.append('username', username);
+        data.append('password', password);
+        data.append('email', email);
+        data.append('profilename', profilename);
+        data.append('bio', bio);
+        data.append('profilepicture', {
+          name: `profilepic`,
+          type: 'image/png',
+          uri: profilepic.uri
         });
-
-
-        axios.post(httpClient, formData, {
-          headers: {
-            'accept': 'application/json',
-            'Content-Type': `multipart/form-data`
-          }
+        data.append('backgroundpicture', {
+          name: `backgroundpic`,
+          type: 'image/png',
+          uri: backgroundpic.uri
         })
-        .then((response) => {
-          console.log(JSON.stringify(response.data))
-        })
-        .catch((error) => {
-          console.log(error)
-        }) 
-
-        // const bg = new FormData();
-        // bg.append('backgroundpic', backgroundpic.uri)
-
-        const params = {
-          username: username,
-          password: password,
-          email: email,
-          profilename: profilename,
-          bio: bio,
-          // profilepic: profile,
-          // backgroundpic: bg
-        };
-        console.log(`param: ${params}`);
         await httpClient
-          .post("/user", params)
+          .post("/user", data)
           .then(async (response) => {
             const result = response.data;
             console.log(result);

@@ -110,9 +110,8 @@ export const AccountStyle = StyleSheet.create({
     width: width,
     height: height*0.1,
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 5
   },
   button: {
     borderWidth: 2, 
@@ -120,7 +119,8 @@ export const AccountStyle = StyleSheet.create({
     width: '46%',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5
+    borderRadius: 5,
+    marginHorizontal: 5
   },
   buttonFont: {
     fontSize: 16,

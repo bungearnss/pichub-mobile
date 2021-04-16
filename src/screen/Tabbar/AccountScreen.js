@@ -56,13 +56,11 @@ export default class AccountScreen extends Component {
     } */
 
     let user_id = await AsyncStorage.getItem("userId");
-    console.log(`user_id = ${user_id}`);
 
     await httpClient
       .get(`user/${user_id}`)
       .then((response) => {
         const result = response.data;
-        // console.log(result);
 
         if (result.results == true) {
           this.setState({
@@ -84,7 +82,6 @@ export default class AccountScreen extends Component {
       .get(`post/${user_id}`)
       .then((response) => {
         const img = response.data;
-        console.log(img);
 
         this.setState({ dataList: img });
       })
@@ -164,13 +161,6 @@ export default class AccountScreen extends Component {
       profilename,
       bio,
     } = this.state;
-    console.log(`bg STATE: ${backgroundpic}`);
-    console.log(`pf STATE: ${profilepic}`);
-    console.log(`username: ${username}`);
-    console.log(`password ${password}`);
-    console.log(`profilename: ${profilename}`);
-    console.log(`email: ${email}`);
-    console.log(`bio: ${bio}`);
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={AccountStyle.container}>
@@ -213,28 +203,6 @@ export default class AccountScreen extends Component {
                   </View>
                 )}
               </View>
-              <View
-                style={{
-                  alignItems: "flex-end",
-                  marginTop: 10,
-                  marginRight: 10,
-                }}
-              >
-                <TouchableOpacity onPress={() => this.onPressOpenLogout()}>
-                  <MaterialCommunityIcons
-                    name="logout"
-                    size={24}
-                    color="#8CCDC1"
-                  />
-                </TouchableOpacity>
-                <LogoutModal
-                  islogoutVisible={this.state.islogoutVisible}
-                  closeLogoutModal={(bool) => {
-                    this.closeLogoutModal(bool);
-                  }}
-                  LOGOUT={() => this.onLogoutPress()}
-                />
-              </View>
               <View style={AccountStyle.bioView}>
                 <Text style={{ fontSize: 17, fontWeight: "bold" }}>
                   {profilename}
@@ -271,9 +239,18 @@ export default class AccountScreen extends Component {
                   profilename={profilename}
                   bio={bio}
                 />
-                <TouchableOpacity style={AccountStyle.button}>
-                  <Text style={AccountStyle.buttonFont}>Edit Post</Text>
+                <TouchableOpacity 
+                  style={AccountStyle.button} 
+                  onPress={() => this.onPressOpenLogout()}>
+                  <Text style={AccountStyle.buttonFont}>LOG OUT</Text>
                 </TouchableOpacity>
+                <LogoutModal
+                  islogoutVisible={this.state.islogoutVisible}
+                  closeLogoutModal={(bool) => {
+                    this.closeLogoutModal(bool);
+                  }}
+                  LOGOUT={() => this.onLogoutPress()}
+                />
               </View>
               <View style={AccountStyle.line} />
               <View style={{ paddingHorizontal: 5 }}>
