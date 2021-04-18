@@ -27,7 +27,7 @@ import CustomButton from "../component/CustomButton";
 import { IMAGE } from "../constants/Image";
 import { httpClient } from "../../core/HttpClient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {StackActions} from '@react-navigation/native';
+import { StackActions } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 const height = width * 0.3;
@@ -46,40 +46,45 @@ export default class LoginScreen extends Component {
     };
   }
 
-  checkempty(){
-    if (this.state.username == ''){
-      return "กรุณากรอก Username"
-    }
-    else if (this.state.password == ''){
-      return "กรุณากรอก Password"
-    }
-    else {
-      return "success"
+  componentDidMount() {
+    console.log(`username: ${this.state.username}`);
+    console.log(`password: ${this.state.password}`);
+  }
+
+  checkempty() {
+    if (this.state.username == "") {
+      return "กรุณากรอก Username";
+    } else if (this.state.password == "") {
+      return "กรุณากรอก Password";
+    } else {
+      return "success";
     }
   }
 
-  async onLoginPressed(){
-    let check_temp = this.checkempty()
-    if (check_temp == 'success'){
-      const {username, password} = this.state;
-      const params = {username: username, password: password};
+  async onLoginPressed() {
+    let check_temp = this.checkempty();
+    if (check_temp == "success") {
+      const { username, password } = this.state;
+      const params = { username: username, password: password };
 
       httpClient
-      .post('/login', params)
-      .then(async response => {
-        const result = response.data;
-        if (result.result == true){
-          //save token
-          await AsyncStorage.setItem("userId", result.user_id.toString());
-          await AsyncStorage.setItem("token", result.token);
-          this.props.navigation.dispatch(StackActions.replace("HomeApp"))
-        } else {
-          Alert.alert('Username หรือ Password ไม่ถูกต้อง กรุณาลองใหม่');
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+        .post("/login", params)
+        .then(async response => {
+          const result = response.data;
+          if (result.result == true) {
+            //save token
+            await AsyncStorage.setItem("userId", result.user_id.toString());
+            await AsyncStorage.setItem("token", result.token);
+            this.props.navigation.dispatch(StackActions.replace("HomeApp"));
+          } else {
+            Alert.alert(`${result.message}`);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      Alert.alert("กรุณากรอก Username และ Password");
     }
   }
 
@@ -118,11 +123,9 @@ export default class LoginScreen extends Component {
   }
 
   AbleCheckbox() {
-    this.setState(
-      {
-        checked: !this.state.checked,
-      },
-    );
+    this.setState({
+      checked: !this.state.checked,
+    });
   }
 
   textInputChange(value) {
@@ -148,11 +151,19 @@ export default class LoginScreen extends Component {
 
           <Animatable.View animation="fadeInUpBig" style={LoginStyle.footer}>
             <View style={[LoginStyle.action, { marginTop: 20 }]}>
-            <FontAwesome5 name="user-alt" size={16} color="#B3B3B3" style={{alignSelf: 'center', paddingLeft: 15}}/>
+              <FontAwesome5
+                name="user-alt"
+                size={16}
+                color="#B3B3B3"
+                style={{ alignSelf: "center", paddingLeft: 15 }}
+              />
               <TextInput
                 placeholder="USERNAME"
                 placeholderTextColor="#646466"
-                style={[LoginStyle.custominput, {position:'absolute', left: 32}]}
+                style={[
+                  LoginStyle.custominput,
+                  { position: "absolute", left: 32 },
+                ]}
                 returnKeyType="next"
                 onSubmitEditing={() => this.refs.txtPassword.focus()}
                 onChangeText={(text) => [
@@ -173,7 +184,12 @@ export default class LoginScreen extends Component {
             </View>
 
             <View style={LoginStyle.action}>
-            <FontAwesome5 name="lock" size={16} color="#B3B3B3" style={{alignSelf: 'center', paddingLeft: 15}}/>
+              <FontAwesome5
+                name="lock"
+                size={16}
+                color="#B3B3B3"
+                style={{ alignSelf: "center", paddingLeft: 15 }}
+              />
               {this.state.secureTextEntry ? (
                 <TextInput
                   placeholder="PASSWORD"
@@ -185,11 +201,9 @@ export default class LoginScreen extends Component {
                   returnKeyType="go"
                   value={this.state.password}
                   onChangeText={(text) =>
-                    this.setState(
-                      {
-                        password: text,
-                      }
-                    )
+                    this.setState({
+                      password: text,
+                    })
                   }
                 />
               ) : (
@@ -222,8 +236,14 @@ export default class LoginScreen extends Component {
             </View>
 
             <View style={LoginStyle.buttonspace}>
-              <CustomButton title="REGISTER" onPress={() => this.props.navigation.navigate("Agreement")} />
-              <CustomButton title="SIGN IN" onPress={() => this.onLoginPressed()}/>
+              <CustomButton
+                title="REGISTER"
+                onPress={() => this.props.navigation.navigate("Agreement")}
+              />
+              <CustomButton
+                title="SIGN IN"
+                onPress={() => this.onLoginPressed()}
+              />
             </View>
 
             <View style={LoginStyle.checkboxcontainer}>

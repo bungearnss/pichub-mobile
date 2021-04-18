@@ -46,7 +46,6 @@ export default class TimelineScreen extends Component {
   */
   async componentDidMount() {
     let user_id = await AsyncStorage.getItem('userId');
-    // let user_id = 5;
     console.log(`user id: ${user_id}`);
     await httpClient
       .get(`/timeline/${user_id}`)
@@ -61,7 +60,6 @@ export default class TimelineScreen extends Component {
         this.setState({
         DataList: [...this.state.totaldata.filter((item) => item.tag === "FOR YOU")],
       });
-      // console.log(`dataList: ${this.state.DataList}`)
       })
       .catch((error) => {
         console.log(error);
@@ -81,7 +79,6 @@ export default class TimelineScreen extends Component {
     this.setState({
       active: tab,
     });
-    console.log(`tab: ${tab}`);
   };
 
   /* 
@@ -122,13 +119,12 @@ export default class TimelineScreen extends Component {
   };
 
   /* render top tab bar  */
-  _renderTabs(tab) {
+  _renderTabs(tab, index) {
     const { active } = this.state;
     const isActive = active === tab;
-    // console.log(`active: ${active}`)
 
     return (
-      <View style={TimelineStyle.tabContainer} key={tab.toString()}>
+      <View style={TimelineStyle.tabContainer} key={index}>
         <TouchableOpacity
           onPress={() => this.setStatusFilter(tab)}
           style={
@@ -168,7 +164,6 @@ export default class TimelineScreen extends Component {
 
   /* render Image in FOR YOU tab and TRENDINNG tab */
   _renderItem = ({ item, index }) => {
-    // console.log(`src: ${item.img_src}`)
     if (item.empty) {
       return (
         <View style={[TimelineStyle.itemInvisible, TimelineStyle.itemStyle]} />
@@ -241,7 +236,7 @@ export default class TimelineScreen extends Component {
       <Animated.View style={[TimelineStyle.container]}>
         <StatusBar hidden />
         <Animated.View style={TimelineStyle.tabbox}>
-          {tabs.map((tab) => this._renderTabs(tab))}
+          {tabs.map((tab, index) => this._renderTabs(tab, index))}
         </Animated.View>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -262,9 +257,6 @@ export default class TimelineScreen extends Component {
               img_cate={img_cate}
               img_price={img_price}
               img_stock={img_stock}
-              /* moveToBuy={() =>
-                this.props.navigation.navigate("Buy", { value: img_id, img_src, img_title, img_owner, profile_pic, img_bio, img_cate, img_price, img_stock })
-              } //Bug */
             />
           </View>
           <SafeAreaView style={{ flex: 1 }}>

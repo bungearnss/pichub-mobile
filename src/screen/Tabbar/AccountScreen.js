@@ -48,12 +48,12 @@ export default class AccountScreen extends Component {
 
   async componentDidMount() {
     // This permission is only required on Android
-    /*  const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+     const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
     if (status === 'granted') {
       ScreenCapture.addScreenshotListener(() => {
         alert('ไม่อนุญาตให้นำรูปของศิลปินท่านอื่นไปใช้งานนอกแอปพลิเคชัน หากพบเห็นจะดำเนินการทางกฎหมาย 😊');
       });
-    } */
+    }
 
     let user_id = await AsyncStorage.getItem("userId");
 

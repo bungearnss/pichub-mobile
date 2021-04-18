@@ -53,7 +53,6 @@ export default class PostScreen extends React.Component {
     };
   }
 
-  //Image Select Function
   async componentDidMount() {
     this.getPermissionAsync();
 
@@ -83,7 +82,7 @@ export default class PostScreen extends React.Component {
       allCate: [...this.state.cateList, ...this.state.topicList],
     });
 
-    let arr = this.state.allCate.map((item, index) => {
+    let arr = this.state.allCate.map((item) => {
       item.isSelected = false;
       return { ...item };
     });
@@ -91,7 +90,7 @@ export default class PostScreen extends React.Component {
     // console.log(`arr data: ${arr}`);
   }
 
-  async _selectionCate (ind) {
+  _selectionCate (ind) {
     const { allCate } = this.state;
     let arr2 = allCate.map((item, index) => {
       if (ind == index) {
@@ -145,7 +144,7 @@ export default class PostScreen extends React.Component {
       const result = response.data;
       console.log(result)
       if(result.results == true){
-        Alert.alert("โพสเสร็จสิ้น"),
+        Alert.alert("Successfully posted"),
         this.props.navigation.navigate("Account")
       }
     })
@@ -174,8 +173,6 @@ export default class PostScreen extends React.Component {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       this.setState({
         img_src: result,
@@ -193,7 +190,7 @@ export default class PostScreen extends React.Component {
       );
     }
     return (
-      <View key={item.cate_id} style={{ padding: 5 }}>
+      <View key={index} style={{ padding: 5 }}>
         <View style={{ flexDirection: "row"}}>
           <CheckBox
             checked={item.isSelected}
@@ -242,7 +239,6 @@ export default class PostScreen extends React.Component {
   }
 
   render() {
-    console.log(this.state.cate_selected)
     return (
       <View style={PostStyle.containers}>
         <View style={PostStyle.finishContainer}>

@@ -88,11 +88,10 @@ export default class BuyScreen extends Component {
                 horizontal
                 showsHorizontalScrollIndicator={false}
               >
-                {this.state.img_cate.map((item) => {
+                {this.state.img_cate.map((item, index) => {
                   return (
-                    <View style={BuyStyle.cateView} key={item}>
+                    <View style={BuyStyle.cateView} key={index}>
                       <Text style={{ color: "#FFF", fontSize: 13 }}>
-                        {/* {item.cate_title} */}
                         {item}
                       </Text>
                     </View>

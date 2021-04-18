@@ -79,6 +79,7 @@ export default class TopicsScreen extends Component {
   onSelected = async() => {
     const { dataList } = this.state;
     const { value, id} = this.props.route.params;
+    
     //check data selected
     //prepare information sent at the back of the hourse
     let listSelected = dataList.filter((item) => item.isSelected == true);
