@@ -89,7 +89,7 @@ export default class PictureModal extends Component {
               resizeMode="cover"
             >
               <TouchableOpacity
-                onPress={this.props.moveToBuy} //bug
+                onPress={() => this.closeModal()} //bug
                 style={styles.Mainbox}
               >
                 <View style={styles.profileView}>

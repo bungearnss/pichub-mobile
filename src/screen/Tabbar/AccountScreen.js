@@ -100,6 +100,7 @@ export default class AccountScreen extends Component {
 
   async onLogoutPress() {
     await AsyncStorage.removeItem("token");
+    await AsyncStorage.removeItem("userId");
     this.props.navigation.dispatch(StackActions.replace("Login"));
   }
 

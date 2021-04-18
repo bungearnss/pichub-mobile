@@ -45,6 +45,7 @@ export default class RegisterScreen extends Component {
       profilename: "",
       bio: "",
       hasPermission: "",
+      user_id: ""
     };
   }
 
@@ -75,7 +76,6 @@ export default class RegisterScreen extends Component {
 
     if (!result.cancelled) {
       this.setState({ profilepic: result });
-      console.log(result);
     }
   };
 
@@ -91,7 +91,6 @@ export default class RegisterScreen extends Component {
   };
 
   handleUsernameChange = (username) => {
-    console.log(`username: ${username}`);
     if (username.trim().length == 0) {
       this.setState({
         check_usernameChange: false,
@@ -217,12 +216,16 @@ export default class RegisterScreen extends Component {
           .post("/user", data)
           .then(async (response) => {
             const result = response.data;
-            console.log(result);
+            if (result.results == true){
+              this.setState({
+                user_id: result.user_id.toString()
+              })
+            }
           })
           .catch((error) => {
             console.log(error);
           });
-        this.props.navigation.navigate("Category");
+        this.props.navigation.navigate("Category", {value: this.state.user_id});
       } else {
         Alert.alert("ยืนยันรหัสผ่านไม่ถูกต้อง");
       }

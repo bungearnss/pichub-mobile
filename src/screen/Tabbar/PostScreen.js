@@ -25,6 +25,7 @@ import { PostStyle } from "../../styles/PostStyle";
 import { IMAGE } from "../../constants/Image";
 import CustomButton from "../../component/CustomButton";
 import { httpClient } from "../../../core/HttpClient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const numColumns = 1;
 
@@ -90,7 +91,7 @@ export default class PostScreen extends React.Component {
     // console.log(`arr data: ${arr}`);
   }
 
-  _selectionCate = (ind) => {
+  async _selectionCate (ind) {
     const { allCate } = this.state;
     let arr2 = allCate.map((item, index) => {
       if (ind == index) {
@@ -99,22 +100,58 @@ export default class PostScreen extends React.Component {
       return { ...item };
     });
     this.setState({ allCate: arr2 });
-  };
-
-  onFinish = () => {
-    const { allCate } = this.state;
 
     let cateListSelected = allCate.filter((item) => item.isSelected == true);
     // console.log(cateListSelected)
 
-    for (let i = 0; i < cateListSelected.length; i++){
-      const result = cateListSelected.slice(0, i+1).map(({cate_id}) => cate_id);
-      console.log(result)
+    let contentAlert = [];
+    cateListSelected.forEach((item) => {
+      contentAlert = contentAlert + item.cate_id + "," ;
+    });
+    console.log(contentAlert)
 
-      this.setState({
-        cate_selected: result
-      })
+    this.setState({
+      cate_selected: contentAlert
+    })
+  };
+
+
+  async onFinish(){
+
+    const {isUnlimited} = this.state;
+    if (isUnlimited == true){
+      this.setState({ img_stock: 0})
     }
+
+    let user_id = await AsyncStorage.getItem('userId');
+    const {img_title, img_price, img_bio, img_stock, cate_selected, img_src} = this.state;
+
+    const data = new FormData();
+    data.append('user_id', user_id);
+    data.append('picturetitle', img_title);
+    data.append('price', img_price);
+    data.append('desciption', img_bio);
+    data.append('stocklimits', img_stock);
+    data.append('categories', cate_selected);
+    data.append('uploaded_pic', {
+      name: `picsof.${user_id}`,
+            type: 'image/png',
+            uri : img_src.uri,
+    })
+
+    await httpClient
+    .post('/post', data)
+    .then((response) => {
+      const result = response.data;
+      console.log(result)
+      if(result.results == true){
+        Alert.alert("โพสเสร็จสิ้น"),
+        this.props.navigation.navigate("Account")
+      }
+    })
+    .catch(error => {
+      console.log(error)
+    }) 
   };
 
   getPermissionAsync = async () => {
@@ -191,19 +228,26 @@ export default class PostScreen extends React.Component {
   };
 
   _isLimitedCheck() {
-    this.setState({ isLimited: !this.state.isLimited });
+    this.setState({ 
+      isLimited: !this.state.isLimited,
+      isUnlimited: false 
+    });
   }
 
   _isUnlimitedCheck() {
-    this.setState({ isUnlimited: !this.state.isUnlimited });
+    this.setState({ 
+      isUnlimited: !this.state.isUnlimited,
+      isLimited: false 
+    });
   }
 
   render() {
+    console.log(this.state.cate_selected)
     return (
       <View style={PostStyle.containers}>
         <View style={PostStyle.finishContainer}>
           <View style={{ paddingVertical: 15 }}>
-            <CustomButton onPress={this.onFinish} title="Finish" />
+            <CustomButton onPress={() => this.onFinish()} title="Finish" />
           </View>
           <ScrollView
             style={{ backgroundColor: "#F8F8F8", flex: 1 }}

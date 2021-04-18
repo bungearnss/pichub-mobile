@@ -262,9 +262,9 @@ export default class TimelineScreen extends Component {
               img_cate={img_cate}
               img_price={img_price}
               img_stock={img_stock}
-              moveToBuy={() =>
-                this.props.navigation.navigate("Buy", { value: item })
-              } //Bug
+              /* moveToBuy={() =>
+                this.props.navigation.navigate("Buy", { value: img_id, img_src, img_title, img_owner, profile_pic, img_bio, img_cate, img_price, img_stock })
+              } //Bug */
             />
           </View>
           <SafeAreaView style={{ flex: 1 }}>

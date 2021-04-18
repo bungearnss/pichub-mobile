@@ -32,7 +32,6 @@ export default class AgreementScreen extends Component {
     .get('/agreement')
     .then( response => {
       const result = response.data;
-      // console.log(result);
       
       this.setState({
         statement: result
@@ -47,8 +46,7 @@ export default class AgreementScreen extends Component {
     this.setState(
       {
         agree: !this.state.agree,
-      },
-      console.log(`agree STATE: ${this.state.agree}`)
+      }
     );
   }
 

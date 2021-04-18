@@ -13,14 +13,6 @@ export default class BuyScreen extends Component {
     super(props);
     this.state = {
       isModalVisible: false,
-      img_cates: [
-        { cate_id: 1, cate_title: "Animal Fox Nature" },
-        { cate_id: 2, cate_title: "Women Girl Shooting" },
-        { cate_id: 3, cate_title: "Sculpture Christ Figure" },
-        { cate_id: 4, cate_title: "Street" },
-        { cate_id: 5, cate_title: "Abtract Ice Frost" },
-        { cate_id: 6, cate_title: "Dance Ballet Powder" },
-      ],
       img_id: null,
       img_title: "",
       img_owner: "",
@@ -67,7 +59,6 @@ export default class BuyScreen extends Component {
 
   render() {
     const { value } = this.props.route.params;
-    console.log(this.state.img_cate)
     return (
       <View style={BuyStyle.containers}>
         <StatusBar hidden />
@@ -164,7 +155,9 @@ export default class BuyScreen extends Component {
                 />
                 {this.state.checkUser == false ? (
                   <CustomButton title="BUY" onPress={() => this.onBuypic()} />
-                ) : null}
+                ) :
+                  <CustomButton title="Edit Post"/>
+                }
               </View>
               <View style={{ flex: 1 }}>
                 <BuyModal

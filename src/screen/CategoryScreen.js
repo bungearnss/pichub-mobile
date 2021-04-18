@@ -24,6 +24,7 @@ export default class CategoryScreen extends Component {
     this.state = {
       selected: false,
       dataList: [],
+      user_id: ''
     };
   }
 
@@ -32,7 +33,6 @@ export default class CategoryScreen extends Component {
       .get("/categories")
       .then((response) => {
         const result = response.data;
-        // console.log(`result :${result}`);
 
         if (result != null) {
           this.setState({
@@ -50,6 +50,11 @@ export default class CategoryScreen extends Component {
     });
     this.setState({ dataList: arr });
     // console.log(`arr data: ${arr}`);
+
+    const {value} = this.props.route.params;
+    this.setState({
+      user_id: value
+    })
   }
 
   // selectionHandler is a function that detected which category the user has selected
@@ -141,12 +146,10 @@ export default class CategoryScreen extends Component {
 
   render() {
     let listSelected = this.state.dataList.filter((item) => item.isSelected == true);
-    console.log(`listSelected: ${listSelected}`);
     let contentAlert = [];
     listSelected.forEach((item) => {
       contentAlert = contentAlert + item.cate_id + ",";
     });
-    console.log(`contentAlert: ${contentAlert}`)
     return (
       <View style={CategoryStyle.containers}>
         <View style={CategoryStyle.subcontainer}>
@@ -175,7 +178,7 @@ export default class CategoryScreen extends Component {
               <CustomButton
                 title="NEXT"
                 onPress={() => 
-                  this.props.navigation.navigate("Topics", {value: contentAlert})
+                  this.props.navigation.navigate("Topics", {value: contentAlert, id: this.state.user_id})
                 }
               />
               {/* test onSelected function */}

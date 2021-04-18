@@ -45,7 +45,6 @@ export default class TopicsScreen extends Component {
       .get("/topics")
       .then((response) => {
         const result = response.data;
-        // console.log(`result: ${result}`);
 
         if (result != null) {
           this.setState({
@@ -61,7 +60,6 @@ export default class TopicsScreen extends Component {
       return { ...item };
     });
     this.setState({ dataList: arr });
-    // console.log(`arr data: ${arr}`);
   }
 
   // selectionHandler is a function that detected which category the user has selected
@@ -80,8 +78,7 @@ export default class TopicsScreen extends Component {
 
   onSelected = async() => {
     const { dataList } = this.state;
-    const {value} = this.props.route.params;
-    console.log(`old cate value: ${value}`);
+    const { value, id} = this.props.route.params;
     //check data selected
     //prepare information sent at the back of the hourse
     let listSelected = dataList.filter((item) => item.isSelected == true);
@@ -93,9 +90,9 @@ export default class TopicsScreen extends Component {
 
     /* post to subscribeCategories */
     let allValue = [];
-    allValue = [value, contentAlert];
-    // console.log(`all value STATE: ${allValue}`);
-    let user_id = await AsyncStorage.getItem('userId');
+    allValue = value + contentAlert;
+
+    const user_id = id;
 
     const params = {user_id: user_id, subscribed_categories: allValue};
     httpClient

@@ -122,12 +122,10 @@ export default class LoginScreen extends Component {
       {
         checked: !this.state.checked,
       },
-      console.log(`checked STATE: ${this.state.checked}`)
     );
   }
 
   textInputChange(value) {
-    console.log(`username: ${value}`);
     if (value.trim().length == 0) {
       this.setState({
         check_textInputChange: false,
@@ -141,8 +139,6 @@ export default class LoginScreen extends Component {
   }
 
   render() {
-    console.log(`username STATE: ${this.state.username}`);
-    console.log(`password STATE: ${this.state.username}`);
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={LoginStyle.containers}>
